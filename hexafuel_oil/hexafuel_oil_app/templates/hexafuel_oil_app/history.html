@@ -1,0 +1,90 @@
+{% extends 'hexafuel_oil_app/main.html'%}
+
+{% load static %}
+{% block content %}
+	
+	{% include 'hexafuel_oil_app/navbar.html'%}
+	
+	<br>
+
+	<div class="row">
+		<div class="col-md-11 history_table">
+			<div class="card card-body profile-change-card-side">
+				<table class="table table-sm table-hover">
+					<tr>
+						<th>Name</th>
+						<th>State</th>
+						<th>Requested</th>
+						<th>Address</th>
+						<th>Date</th>
+						<th>Suggested Price/Gallon</th>
+						<th>Total</th>
+					</tr>
+
+					<tr>
+						<td>Johnny Appleseed</td>
+						<td>In-state</td>
+						<td>47.3 GAL</td>
+						<td>4922 Creekwood Lane</td>
+						<td>2/4/2021</td>
+						<td>xx.xx</td>
+						<td>$1,421</td>
+					</tr>
+
+					<tr>
+						<td>Bob Swan</td>
+						<td>In-State</td>
+						<td>78.2 GAL</td>
+						<td>92 Sweeatwater Dr</td>
+						<td>2/1/2021</td>
+						<td>xx.xx</td>
+						<td>$4,153</td>
+					</tr>
+
+					<tr>
+						<td>Jackson Mills</td>
+						<td>Out-of-State</td>
+						<td>98 GAL</td>
+						<td>543 Saddle Pine Rd</td>
+						<td>1/20/2021</td>
+						<td>xx.xx</td>
+						<td>$6,123</td>
+					</tr>
+
+					<tr>
+						<td>Shawn Richards</td>
+						<td>In-State</td>
+						<td>219 GAL</td>
+						<td>938 True Lake Ln</td>
+						<td>1/17/2021</td>
+						<td>xx.xx</td>
+						<td>$12,123</td>
+					</tr>
+
+					<tr>
+						<td>Carlos Suarez</td>
+						<td>Out-of-State</td>
+						<td>19 GAL</td>
+						<td>18423 Narrow Lake View</td>
+						<td>1/09/2021</td>
+						<td>xx.xx</td>
+						<td>$329</td>
+					</tr>
+
+					<tr>
+						<td>Tom Flanders</td>
+						<td>Out-of-State</td>
+						<td>324 GAL</td>
+						<td>907 Pine Rock Ln</td>
+						<td>12/21/2020</td>
+						<td>xx.xx</td>
+						<td>$43,293</td>
+					</tr>
+
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{% endblock %}

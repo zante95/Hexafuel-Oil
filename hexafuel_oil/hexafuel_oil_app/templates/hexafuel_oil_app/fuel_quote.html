@@ -1,0 +1,59 @@
+{% extends 'hexafuel_oil_app/main.html'%}
+{% load static %}
+
+{% block content %}
+  <link rel='stylesheet' type='text/css' media='screen' href="{% static '/css/fuel_quote.css' %}">
+  
+  {% include 'hexafuel_oil_app/navbar.html'%}
+  
+  <br>
+
+  <div class="form_container">
+        <form name="fuel-form" method="POST" action="" enctype="multipart/form-data" onsubmit="return validateForm()">
+        
+            <div class="input-group mb-2">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-fill-drip"></i></span>
+                </div>
+
+                <input type="text" name="gallons" class="form-control">
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                </div>
+                
+                <input type="text" name="deliver-address" class="form-control" readonly>
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
+                </div>
+                
+                <input type="date" name="delivery-date" class="form-control">
+            </div>
+
+            <div class="alert alert-warning cost-group" role="alert">
+                <div class="row">
+                    <div class="col-md-4">
+                        Cost per Gallons: $4.12
+                    </div>
+                    <div class="col-md-4 offset-md-4">
+                        <h4>Total Cost: $100</h4>
+                </div>
+                </div>
+            </div>
+        <input class="btn btn-primary centered" type="submit" name="Calculate Cost" value="Calculate Cost">
+        </form>
+
+    </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+  <script src="{% static 'js/fuel_quote/util.js' %}"></script>
+
+{% endblock %}
