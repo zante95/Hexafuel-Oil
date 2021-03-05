@@ -28,8 +28,8 @@
 		</div>
 		<div class="col-md-9">
 			<div class="card card-body profile-change-card">
-				
-				<form method="POST" action="" enctype="multipart/form-data" name="profile-form" onsubmit="return validateForm()">
+				<form method="POST" action="" enctype="multipart/form-data" name="profile-form"  onsubmit="return validateForm()">
+					{% csrf_token %} 
 				
 					<div class="input-group mb-2">
 						<div class="input-group-append">
@@ -72,7 +72,7 @@
 						
 						<input type="text" name="zipcode" class="form-control" required>
 					</div>
-			
+					<input type="hidden" name="is_Submitted" value="">
 				<input class="btn btn-primary" type="submit" name="Update Information" value="Update Information">
 				</form>
 			</div>

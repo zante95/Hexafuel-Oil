@@ -1,10 +1,10 @@
 //Query All input fields
 var form_fields = document.getElementsByTagName('input');
-form_fields[0].placeholder='Full Name..';
-form_fields[1].placeholder='Address 1..';
-form_fields[2].placeholder='Address 2..';
-form_fields[3].placeholder='City..';
-form_fields[4].placeholder='ZIP code..';
+form_fields[1].placeholder='Full Name..';
+form_fields[2].placeholder='Address 1..';
+form_fields[3].placeholder='Address 2..';
+form_fields[4].placeholder='City..';
+form_fields[5].placeholder='ZIP code..';
 
 for (var field in form_fields){	
     form_fields[field].className += ' form-control'
@@ -41,4 +41,6 @@ function validateForm(){
         alert("Please enter your zip code and make sure it has 5 characters.");
         return false;
     } 
+
+    document.forms['profile-form']['is_Submitted'].value="true"
 }
