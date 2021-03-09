@@ -1,5 +1,5 @@
-hexafuel_oil/hexafuel_oil/__pycache__
-hexafuel_oil/hexafuel_oil_app/__pycache__
-hexafuel_oil/hexafuel_oil_app/.pytest_cache
-.pytest_cache
-.vscode
+hexafuel_oil/hexafuel_oil/__pycache__/*
+hexafuel_oil/hexafuel_oil_app/__pycache__/*
+hexafuel_oil/hexafuel_oil_app/.pytest_cache/*
+.pytest_cache/*
+.vscode/*
