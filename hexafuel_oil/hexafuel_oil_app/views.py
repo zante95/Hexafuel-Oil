@@ -5,19 +5,19 @@ from django.views.generic import TemplateView
 
 # Create your views here.
 
-class HomeView(TemplateView): # pragma: no cover
+class HomeView(TemplateView):
     template_name = "hexafuel_oil_app/login.html"
 
     def post(self, request, *args, **kwargs):
 
-        #print("REQUEST", request.POST)
-        username = str(request.POST.get('username')) # pragma: no cover
-        pwd = str(request.POST.get('password')) # pragma: no cover
+        print("REQUEST", request.POST)
+        username = str(request.POST.get('username'))
+        pwd = str(request.POST.get('password'))
         
-        self.object = [] # pragma: no cover
+        self.object = []
 
-        #print(type(username)) #-> <class 'str'>
-        #print(type(pwd)) #-> <class 'str'>
+        print(type(username)) #-> <class 'str'>
+        print(type(pwd)) #-> <class 'str'>
         
         if (username == "") or (len(username) > 10):
             return JsonResponse({"ValidationError": "username cannot be empty or cannot exceed 10 chars."})
@@ -35,23 +35,23 @@ class RegisterView(TemplateView):
 
     def post(self, request, *args, **kwargs):
 
-        #print("REQUEST", request.POST)
-        username = str(request.POST.get('username')) # pragma: no cover
-        email = str(request.POST.get('email')) # pragma: no cover
-        pwd = str(request.POST.get('password1')) # pragma: no cover
-        retypePwd = str(request.POST.get('password2')) # pragma: no cover
+        print("REQUEST", request.POST)
+        username = str(request.POST.get('username'))
+        email = str(request.POST.get('email'))
+        pwd = str(request.POST.get('password1'))
+        retypePwd = str(request.POST.get('password2'))
 
-        isSubmitted = str(request.POST.get('isSubmitted')) # pragma: no cover
+        isSubmitted = str(request.POST.get('isSubmitted'))
         
-        self.object = [] # pragma: no cover
+        self.object = []
 
-        #print(type(username)) #-> <class 'str'>
-        #print(type(email)) #-> <class 'str'>
-        #print(type(pwd)) #-> <class 'str'>
-        #print(type(retypePwd)) #-> <class 'str'>
-        #print(type(isSubmitted)) #-> <class 'str'>
+        print(type(username)) #-> <class 'str'>
+        print(type(email)) #-> <class 'str'>
+        print(type(pwd)) #-> <class 'str'>
+        print(type(retypePwd)) #-> <class 'str'>
+        print(type(isSubmitted)) #-> <class 'str'>
         
-        email_regex = re.compile(r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|'(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*')@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])") # pragma: no cover
+        email_regex = re.compile(r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|'(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*')@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])")
 
         if (isSubmitted == "true"):
 
