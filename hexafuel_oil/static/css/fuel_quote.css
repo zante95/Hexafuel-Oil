@@ -1,0 +1,66 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #ffeaa7 !important;
+}
+
+.form_container {
+  margin: 20px auto;
+  width: 700px;
+  background: #00b894;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+}
+
+.form-control::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #ffffff;
+  opacity: 0.8;
+}
+
+.form-control,
+.form-control:focus {
+  background: rgba(255, 255, 255, 0);
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.form-control:focus {
+  border-color: #ffffff;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.075),
+    0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+.input-group-text {
+  background: #0984e3 !important;
+  color: white !important;
+  border: 0 !important;
+  border-radius: 0.25rem 0 0 0.25rem !important;
+}
+
+.btn-primary {
+  background: #0984e3 !important;
+  color: white !important;
+}
+
+.btn-primary:hover {
+  border-color: #ffffff !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.075),
+    0 0 8px rgba(255, 255, 255, 0.6) !important;
+}
+
+.cost-group {
+  font-weight: bold;
+  padding: 5px 0px 0px 10px;
+}

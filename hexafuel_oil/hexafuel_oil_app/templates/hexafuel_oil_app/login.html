@@ -1,0 +1,63 @@
+{% extends 'hexafuel_oil_app/main.html' %}
+
+{% load static %}
+{% block content %}
+
+<div class="container h-100">
+
+	<div class="text-center logo_container">
+		<img src="{% static 'images/logo.png' %}" id="logo" class="rounded" height="200" width="200">
+	</div>
+
+	<div class="d-flex justify-content-center h-50">
+
+		<div class="user_card">
+			<div class="d-flex justify-content-center">
+
+
+				<h3 id="form-title">LOGIN</h3>
+			</div>
+			<div class="d-flex justify-content-center form_container">
+				<form method="POST" action="">
+					{% csrf_token %}
+					<div class="input-group mb-3">
+						<div class="input-group-append">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+
+						<input type="text" name="username" placeholder="Username..." class="form-control">
+					</div>
+
+					<div class="input-group mb-2">
+						<div class="input-group-append">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div>
+
+							<input type="password" name="password" placeholder="Password..." class="form-control" >
+					</div>
+
+						<div class="d-flex justify-content-center mt-3">
+							<input class="btn login_btn" type="submit" value="Login">
+						</div>
+				</form>
+
+			</div>
+
+				<!--<p id="messages" hidden>Wrong username or password! Please try again.</p>-->
+				{% for message in messages %}
+					<p id="messages">{{message}}</p>
+				{% endfor %}			
+	
+			<div class="mt-4">
+				<div class="d-flex justify-content-center links">
+					Don't have an account? <a href="{% url 'register' %}" class="ml-2">Sign Up</a>
+				</div>
+		
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+{% endblock %}
