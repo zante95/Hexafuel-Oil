@@ -33,7 +33,7 @@ class FormView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         # def post(request, format=None, *args, **kwargs):
-        # print("REQUEST", request.POST)
+        print("REQUEST", request.POST)
         # print("BOOL", bool(request.POST))
         # print("REQUEST", request.POST)
         # data = request.POST.copy()
