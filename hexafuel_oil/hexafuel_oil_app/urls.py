@@ -1,12 +1,10 @@
 from django.urls import path
-from . import views
-from .views import FormView
+from .views import FormView, ProfileView, HomeView, RegisterView
 
 urlpatterns = [
-    path("", views.home, name="home"),
+    path('', HomeView.as_view(), name="home"),
     path("form/", FormView.as_view(), name="form"),
-    # path("form/", views.form, name="form"),
-    path("register/", views.register, name="register"),
-    path("history/", views.history, name="history"),
-    path("profile/", views.profile, name="profile"),
+    path('register/', RegisterView.as_view(), name="register"),
+    path('history/', views.history, name="history"),
+    path('profile/', ProfileView.as_view(), name="profile"),
 ]
