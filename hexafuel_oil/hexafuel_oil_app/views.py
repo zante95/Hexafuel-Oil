@@ -77,7 +77,7 @@ class ProfileView(TemplateView):
    template_name = "hexafuel_oil_app/account_settings.html"
    def post(self, request, *args, **kwargs):
     #    fullname, address1, address2, city, zipcode
-    #    print("REQUEST", request.POST)
+        print("REQUEST", request.POST)
         fullname = str(request.POST.get('fullname'))
         add1 = str(request.POST.get('address1'))
         add2 = str(request.POST.get('address2'))
@@ -85,23 +85,23 @@ class ProfileView(TemplateView):
         zipcode = str(request.POST.get('zipcode'))
         is_Submitted = str(request.POST.get('is_Submitted'))
  
-       self.object = []
+        self.object = []
  
-       if(is_Submitted == "true"):
+        if(is_Submitted == "true"):
               
-           if (len(fullname)<1 or len(fullname) > 55):
-               return JsonResponse({"ValidationError": "Name needs to be more than 1 and less than 55 charaters longs."})
+            if (len(fullname)<1 or len(fullname) > 55):
+                return JsonResponse({"ValidationError": "Name needs to be more than 1 and less than 55 charaters longs."})
  
-           if (len(add1)<1 or len(add1) > 100):
-               return JsonResponse({"ValidationError": "Address 1 needs to be more than 1 and less than 100 charaters longs."})
+            if (len(add1)<1 or len(add1) > 100):
+                return JsonResponse({"ValidationError": "Address 1 needs to be more than 1 and less than 100 charaters longs."})
  
-           if len(add2) > 100:
-               return JsonResponse({"ValidationError": "Address 2 needs to be less than 100 charaters longs."})
+            if len(add2) > 100:
+                return JsonResponse({"ValidationError": "Address 2 needs to be less than 100 charaters longs."})
  
-           if (len(city)<1 or len(city)) > 100:
-               return JsonResponse({"ValidationError": "City needs to be more than 1 and less than 100 charaters longs."})
+            if (len(city)<1 or len(city)) > 100:
+                return JsonResponse({"ValidationError": "City needs to be more than 1 and less than 100 charaters longs."})
  
-           if len(zipcode) != 5:
-               return JsonResponse({"ValidationError": "City needs to be 5 characters long."})
+            if len(zipcode) != 5:
+                return JsonResponse({"ValidationError": "City needs to be 5 characters long."})
  
-       return render(request, 'hexafuel_oil_app/account_settings.html')
+        return render(request, 'hexafuel_oil_app/account_settings.html')
