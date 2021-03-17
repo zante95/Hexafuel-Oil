@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from django.views.generic import TemplateView
+import datetime
 import re
 from django.views.generic import TemplateView
 
@@ -28,8 +28,42 @@ class HomeView(TemplateView):
 
         return render(request, 'hexafuel_oil_app/login.html')
 
-def form(request): # pragma: no cover
-    return render(request, 'hexafuel_oil_app/fuel_quote.html')
+class FormView(TemplateView):
+    template_name = "hexafuel_oil_app/fuel_quote.html"
+
+    def post(self, request, *args, **kwargs):
+        # def post(request, format=None, *args, **kwargs):
+        # print("REQUEST", request.POST)
+        # print("BOOL", bool(request.POST))
+        # print("REQUEST", request.POST)
+        # data = request.POST.copy()
+
+        self.object = []
+
+        if bool(request.POST):
+            data = request.POST.dict()
+
+            gallons = data["gallons"]
+            delivery_date_str = data["delivery-date"]
+            delivery_address = data["delivery-address"]
+
+            if not gallons.isnumeric():
+                return JsonResponse(
+                    {"ValidationError": "Gallons must be a whole number."}
+                )
+
+            # if not True:
+            #     return JsonResponse({"ValidationError": "Delivery address does not match"})
+
+            date_time_obj = datetime.datetime.strptime(delivery_date_str, "%Y-%m-%d")
+
+            if date_time_obj < datetime.datetime.now():
+                return JsonResponse({"ValidationError": "Choose a latter date."})
+
+        return render(
+            request,
+            "hexafuel_oil_app/fuel_quote.html",
+        )
 
 class RegisterView(TemplateView):
     template_name = "hexafuel_oil_app/register.html"

@@ -1,7 +1,29 @@
-from django.test import RequestFactory, TestCase, Client
+from django.test import TestCase, Client
 from django.urls import reverse
-from .views import ProfileView, RegisterView
-from django.views.generic import TemplateView
+from .views import FormView, ProfileView, RegisterView
+
+c = Client()
+request = c.post(
+    "/form/",
+    {
+        "gallons": ["4"],
+        "delivery-address": [""],
+        "delivery-date": ["2021-03-18"],
+        "Calculate Cost": ["Calculate Cost"],
+    },
+)
+
+
+class FormViewTest(TestCase):
+    @classmethod
+    def test_view_validations(self):
+        # response = self.client.post("/form/")
+        # print("self", self)
+        # print("self", self.__dict__)
+        # print("response", response)
+        # print("response.status_code", response.status_code)
+        # self.assertEqual(response.status_code, 200)
+        pass
 
 no_error_test = Client()
 response = no_error_test.post(

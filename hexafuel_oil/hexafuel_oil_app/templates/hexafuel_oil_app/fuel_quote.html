@@ -2,58 +2,122 @@
 {% load static %}
 
 {% block content %}
-  <link rel='stylesheet' type='text/css' media='screen' href="{% static '/css/fuel_quote.css' %}">
-  
-  {% include 'hexafuel_oil_app/navbar.html'%}
-  
-  <br>
+<link rel='stylesheet' type='text/css' media='screen' href="{% static '/css/fuel_quote.css' %}">
 
-  <div class="form_container">
-        <form name="fuel-form" method="POST" action="" enctype="multipart/form-data" onsubmit="return validateForm()">
-        
-            <div class="input-group mb-2">
-                <div class="input-group-append">
-                    <span class="input-group-text"><i class="fas fa-fill-drip"></i></span>
-                </div>
+{% include 'hexafuel_oil_app/navbar.html'%}
 
-                <input type="text" name="gallons" class="form-control">
-            </div>
+<br>
 
-            <div class="input-group mb-2">
-                <div class="input-group-append">
-                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                </div>
-                
-                <input type="text" name="deliver-address" class="form-control" readonly>
-            </div>
+<div class="form_container">
+  <form name="fuel-form" method="POST" action="" enctype="multipart/form-data" onsubmit="return validateForm()">
+    {% csrf_token %}
+    <div class="input-group mb-2">
+      <div class="input-group-append">
+        <span class="input-group-text"><i class="fas fa-fill-drip"></i></span>
+      </div>
 
-            <div class="input-group mb-2">
-                <div class="input-group-append">
-                    <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
-                </div>
-                
-                <input type="date" name="delivery-date" class="form-control">
-            </div>
-
-            <div class="alert alert-warning cost-group" role="alert">
-                <div class="row">
-                    <div class="col-md-4">
-                        Cost per Gallons: $4.12
-                    </div>
-                    <div class="col-md-4 offset-md-4">
-                        <h4>Total Cost: $100</h4>
-                </div>
-                </div>
-            </div>
-        <input class="btn btn-primary centered" type="submit" name="Calculate Cost" value="Calculate Cost">
-        </form>
-
+      <input type="text" name="gallons" class="form-control" required>
     </div>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <div class="input-group mb-2">
+      <div class="input-group-append">
+        <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+      </div>
+
+      <input type="text" name="delivery-address" class="form-control" readonly>
+    </div>
+
+    <div class="input-group mb-2">
+      <div class="input-group-append">
+        <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
+      </div>
+
+      <input type="date" name="delivery-date" class="form-control" required>
+    </div>
+
+    <div class="alert alert-warning cost-group" role="alert">
+      <div class="row">
+        <div class="col-md-4">
+          Cost per Gallons: $4.12
+        </div>
+        <div class="col-md-4 offset-md-4">
+          <h4>Total Cost: $100</h4>
+        </div>
+      </div>
+    </div>
+    <input class="btn btn-primary centered" type="submit" name="Calculate Cost" value="Calculate Cost"
+      onclick="AddQuote()">
+  </form>
+
+  <!-- <div class="card card-body profile-change-card-side">
+    <table class="table table-sm table-hover" id="show">
+      <thread>
+        <tr>
+          <th>Name</th>
+          <th>State</th>
+          <th>Requested</th>
+          <th>Address</th>
+          <th>Date</th>
+          <th>Suggested Price/Gallon</th>
+          <th>Total</th>
+        </tr>
+
+        <tr>
+          <td>Johnny Appleseed</td>
+          <td>In-state</td>
+          <td>47.3 GAL</td>
+          <td>4922 Creekwood Lane</td>
+          <td>2/4/2021</td>
+          <td>xx.xx</td>
+          <td>$1,421</td>
+        </tr>
+      </thread>
+    </table>
+  </div>
+</div>
+
+</div>
+
+<script>
+  var list1 = [];
+  var list2 = [];
+  var list3 = [];
+
+  var n = 1;
+  var x = 0;
+
+  function AddQuote() {
+    console.log('HERE')
+    var AddQuote = document.getElementById('show');
+    var NewQuote = AddQuote.insertRow(n);
+
+    list1[x] = document.getElementById('gallons').value;
+    list2[x] = document.getElementById('delivery-address').value;
+    list3[x] = document.getElementById('delivery-date').value;
+
+    var cel1 = NewQuote.insertCell(1);
+    var cel2 = NewQuote.insertCell(2);
+    var cel3 = NewQuote.insertCell(3);
+
+    cel1.innerHTML = list1[x];
+    cel2.innerHTML = list2[x];
+    cel3.innerHTML = list3[x];
+
+    n++;
+    x++;
+  } -->
+  <!-- </script> -->
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
 
   <script src="{% static 'js/fuel_quote/util.js' %}"></script>
 
-{% endblock %}
+  {% endblock %}

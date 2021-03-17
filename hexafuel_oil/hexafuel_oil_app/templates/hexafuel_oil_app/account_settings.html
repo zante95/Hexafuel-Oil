@@ -28,9 +28,10 @@
 		</div>
 		<div class="col-md-9">
 			<div class="card card-body profile-change-card">
-				<form method="POST" action="" enctype="multipart/form-data" name="profile-form"  onsubmit="return validateForm()">
-					{% csrf_token %} 
 				
+				<form method="POST" action="" enctype="multipart/form-data" name="profile-form" onsubmit="return validateForm()">
+					
+					{% csrf_token %}
 					<div class="input-group mb-2">
 						<div class="input-group-append">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
