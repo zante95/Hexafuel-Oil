@@ -42,7 +42,7 @@ fullname_test = Client()
 response = fullname_test.post(
     "/profile/",
     {
-    "fullname": [""],
+    "fullname": ["abc"],
     "add1": ["14455 Country Place Dr"],
     "add2": ["318"],
     "city": ["Houston"],
@@ -64,28 +64,28 @@ response = add1_test.post(
     },
 )
 
-zip_test = Client()
-response = zip_test.post(
+add2_test = Client()
+response = add2_test.post(
     "/profile/",
     {
     "fullname": ["Carlos Suarez"],
     "add1": ["14455 Country Place Dr"],
-    "add2": ["desdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgads"],
+    "add2": ["desdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadsdesdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadsdesdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadsdesdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgads"],
     "city": ["Houston"],
     "zipcode": ["77449"],
     "is_Submitted": ["true"]
     },
 )
 
-add1_test = Client()
-response = add1_test.post(
+zip_test = Client()
+response = zip_test.post(
     "/profile/",
     {
     "fullname": ["Carlos Suarez"],
     "add1": ["14455 Country Place Dr"],
-    "add2": ["desdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgads"],
+    "add2": ["desdsfg"],
     "city": ["Houston"],
-    "zipcode": ["77449"],
+    "zipcode": ["123"],
     "is_Submitted": ["true"]
     },
 )
@@ -94,13 +94,21 @@ class ProfileViewTest(TestCase):
     @classmethod
     def test_no_error(self):
         pass
+    
+    @classmethod
     def test_fullname(self):
         pass
+    @classmethod
     def test_add1(self):
         pass
+    
+    @classmethod
     def test_add2(self):
         pass
+    
+    @classmethod
     def test_zip(self):
+        pass
         
 c_wrong_email = Client()
 response = c_wrong_email.post(

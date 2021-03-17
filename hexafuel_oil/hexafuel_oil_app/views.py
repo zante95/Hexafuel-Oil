@@ -123,16 +123,16 @@ class ProfileView(TemplateView):
  
         if(is_Submitted == "true"):
               
-            if (len(fullname)<1 or len(fullname) > 55):
+            if (len(fullname)<1) or (len(fullname) > 55):
                 return JsonResponse({"ValidationError": "Name needs to be more than 1 and less than 55 charaters longs."})
  
-            if (len(add1)<1 or len(add1) > 100):
+            if (len(add1)<1) or (len(add1) > 100):
                 return JsonResponse({"ValidationError": "Address 1 needs to be more than 1 and less than 100 charaters longs."})
  
             if len(add2) > 100:
                 return JsonResponse({"ValidationError": "Address 2 needs to be less than 100 charaters longs."})
  
-            if (len(city)<1 or len(city)) > 100:
+            if (len(city)<1) or (len(city)) > 100:
                 return JsonResponse({"ValidationError": "City needs to be more than 1 and less than 100 charaters longs."})
  
             if len(zipcode) != 5:
