@@ -123,7 +123,7 @@ class ProfileView(TemplateView):
  
         if(is_Submitted == "true"):
               
-            if (len(fullname)<1) or (len(fullname) > 55):
+            if (len(fullname)<1) or (len(fullname) > 50):
                 return JsonResponse({"ValidationError": "Name needs to be more than 1 and less than 55 charaters longs."})
  
             if (len(add1)<1) or (len(add1) > 100):
