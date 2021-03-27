@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from .views import FormView, ProfileView, RegisterView
+from .views import FuelQuoteFormView, ProfileView, RegisterView
 
 c = Client()
 request = c.post(
@@ -14,7 +14,7 @@ request = c.post(
 )
 
 
-class FormViewTest(TestCase):
+class FuelQuoteFormViewTest(TestCase):
     @classmethod
     def test_view_validations(self):
         # response = self.client.post("/form/")
