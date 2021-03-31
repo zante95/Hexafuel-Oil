@@ -4,20 +4,23 @@ import datetime
 import re
 from django.views.generic import TemplateView, CreateView, FormView, DetailView, View, UpdateView
 from django.contrib.auth import authenticate, login, logout, get_user_model
-from rest_framework import permissions
-#from django.utils.decorators import method_decorator
+#from rest_framework import permissions
+
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
 #from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+#from django.utils.decorators import method_decorator
+from django.views.generic import TemplateView
 
 from .mixins import NextUrlMixin, RequestFormAttachMixin
 from .forms import LoginForm, RegisterForm #, GuestForm, ReactivateEmailForm, UserDetailChangeForm
-from .signals import user_logged_in
+#from .signals import user_logged_in
 
 # Create your views here.
 
-class HomeView(TemplateView, ):
+class HomeView(TemplateView):
     template_name = "hexafuel_oil_app/login.html"
-    permission_classes = (permissions.IsAuthenticated, )
+    #permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request, *args, **kwargs):
 
@@ -38,10 +41,11 @@ class HomeView(TemplateView, ):
 
         return render(request, 'hexafuel_oil_app/login.html')
 
-#@method_decorator(login_required)
-class FuelQuoteFormView(LoginRequiredMixin, TemplateView):
+#@method_decorator(login_required, name='dispatch')
+#class FuelQuoteFormView(TemplateView):
+class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     template_name = "hexafuel_oil_app/fuel_quote.html"
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_required = ("auth.change_user")
 
     def post(self, request, *args, **kwargs):
         # def post(request, format=None, *args, **kwargs):
@@ -79,7 +83,7 @@ class FuelQuoteFormView(LoginRequiredMixin, TemplateView):
 
 class RegisterView(TemplateView):
     template_name = "hexafuel_oil_app/register.html"
-    permission_classes = (permissions.IsAuthenticated, )
+    #permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request, *args, **kwargs):
 
@@ -121,10 +125,11 @@ class RegisterView(TemplateView):
 def history(request): # pragma: no cover
     return render(request, 'hexafuel_oil_app/history.html')
 
-#@method_decorator(login_required)
-class ProfileView(LoginRequiredMixin, TemplateView):
+#@method_decorator(login_required, name='dispatch')
+#class ProfileView(TemplateView):
+class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
    template_name = "hexafuel_oil_app/account_settings.html"
-   permission_classes = (permissions.IsAuthenticated, )
+   permission_required = ("auth.change_user")
 
    def post(self, request, *args, **kwargs):
     #    fullname, address1, address2, city, zipcode
