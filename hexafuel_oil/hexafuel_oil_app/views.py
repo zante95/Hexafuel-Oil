@@ -2,25 +2,16 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 import datetime
 import re
-from django.views.generic import TemplateView, CreateView, FormView, DetailView, View, UpdateView
+from django.views.generic import TemplateView, CreateView, FormView, DetailView, View, UpdateView, RedirectView
 from django.contrib.auth import authenticate, login, logout, get_user_model
-#from rest_framework import permissions
-
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-
-#from django.contrib.auth.decorators import login_required
-#from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView
-
 from .mixins import NextUrlMixin, RequestFormAttachMixin
-from .forms import LoginForm, RegisterForm #, GuestForm, ReactivateEmailForm, UserDetailChangeForm
-#from .signals import user_logged_in
+from .forms import LoginForm, RegisterForm
 
 # Create your views here.
 
 class HomeView(TemplateView):
     template_name = "hexafuel_oil_app/login.html"
-    #permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request, *args, **kwargs):
 
@@ -41,14 +32,13 @@ class HomeView(TemplateView):
 
         return render(request, 'hexafuel_oil_app/login.html')
 
-#@method_decorator(login_required, name='dispatch')
-#class FuelQuoteFormView(TemplateView):
+
 class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     template_name = "hexafuel_oil_app/fuel_quote.html"
     permission_required = ("auth.change_user")
 
     def post(self, request, *args, **kwargs):
-        # def post(request, format=None, *args, **kwargs):
+       
         print("REQUEST", request.POST)
         # print("BOOL", bool(request.POST))
         # print("REQUEST", request.POST)
@@ -81,9 +71,9 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
             "hexafuel_oil_app/fuel_quote.html",
         )
 
+
 class RegisterView(TemplateView):
     template_name = "hexafuel_oil_app/register.html"
-    #permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request, *args, **kwargs):
 
@@ -121,12 +111,11 @@ class RegisterView(TemplateView):
 
         return render(request, 'hexafuel_oil_app/register.html')
 
-#use login_required for function based view OR use LoginRequiredMixin for class-based view
+
 def history(request): # pragma: no cover
     return render(request, 'hexafuel_oil_app/history.html')
 
-#@method_decorator(login_required, name='dispatch')
-#class ProfileView(TemplateView):
+
 class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
    template_name = "hexafuel_oil_app/account_settings.html"
    permission_required = ("auth.change_user")
@@ -162,6 +151,7 @@ class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
  
         return render(request, 'hexafuel_oil_app/account_settings.html')
 
+
 class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
     form_class = LoginForm
     success_url = '/form'
@@ -174,7 +164,24 @@ class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
 
         return redirect('/form')
 
+
 class RegisterView2(CreateView):
     form_class = RegisterForm
     template_name = 'hexafuel_oil_app/register2.html'
     success_url = '/home'
+
+
+class LogoutView(LoginRequiredMixin, PermissionRequiredMixin, RedirectView):
+    permission_required = ("auth.change_user")
+
+    permanent = False
+    query_string = True
+    pattern_name = 'home'
+
+    def get_redirect_url(self, *args, **kwargs):
+        """
+        Logout user and redirect to target url.
+        """
+        if self.request.user.is_authenticated:
+            logout(self.request)
+        return super(LogoutView, self).get_redirect_url(*args, **kwargs)
