@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 import datetime
 import re
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView, FormView, DetailView, View, UpdateView, RedirectView
+from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from .mixins import NextUrlMixin, RequestFormAttachMixin
+from .forms import LoginForm, RegisterForm
 
 # Create your views here.
 
@@ -28,11 +32,13 @@ class HomeView(TemplateView):
 
         return render(request, 'hexafuel_oil_app/login.html')
 
-class FormView(TemplateView):
+
+class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     template_name = "hexafuel_oil_app/fuel_quote.html"
+    permission_required = ("auth.change_user")
 
     def post(self, request, *args, **kwargs):
-        # def post(request, format=None, *args, **kwargs):
+       
         print("REQUEST", request.POST)
         # print("BOOL", bool(request.POST))
         # print("REQUEST", request.POST)
@@ -64,6 +70,7 @@ class FormView(TemplateView):
             request,
             "hexafuel_oil_app/fuel_quote.html",
         )
+
 
 class RegisterView(TemplateView):
     template_name = "hexafuel_oil_app/register.html"
@@ -104,11 +111,15 @@ class RegisterView(TemplateView):
 
         return render(request, 'hexafuel_oil_app/register.html')
 
+
 def history(request): # pragma: no cover
     return render(request, 'hexafuel_oil_app/history.html')
 
-class ProfileView(TemplateView):
+
+class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
    template_name = "hexafuel_oil_app/account_settings.html"
+   permission_required = ("auth.change_user")
+
    def post(self, request, *args, **kwargs):
     #    fullname, address1, address2, city, zipcode
         print("REQUEST", request.POST)
@@ -139,3 +150,38 @@ class ProfileView(TemplateView):
                 return JsonResponse({"ValidationError": "City needs to be 5 characters long."})
  
         return render(request, 'hexafuel_oil_app/account_settings.html')
+
+
+class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
+    form_class = LoginForm
+    success_url = '/form'
+    template_name = 'hexafuel_oil_app/login.html'
+    default_next = '/home'
+
+    def form_valid(self, form):
+        next_path = self.get_next_url()
+        print(next_path)
+
+        return redirect('/form')
+
+
+class RegisterView2(CreateView):
+    form_class = RegisterForm
+    template_name = 'hexafuel_oil_app/register2.html'
+    success_url = '/home'
+
+
+class LogoutView(LoginRequiredMixin, PermissionRequiredMixin, RedirectView):
+    permission_required = ("auth.change_user")
+
+    permanent = False
+    query_string = True
+    pattern_name = 'home'
+
+    def get_redirect_url(self, *args, **kwargs):
+        """
+        Logout user and redirect to target url.
+        """
+        if self.request.user.is_authenticated:
+            logout(self.request)
+        return super(LogoutView, self).get_redirect_url(*args, **kwargs)
