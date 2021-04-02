@@ -8,8 +8,12 @@ username = 'user1'
 password = '123'
 
 client = Client()
+
+newUser_noInfo = Client()
+logged_in = newUser_noInfo.login(username = 'user21', password = '123')
+
+request = client.post(
 login = client.login(username=username, password=password)
-# failed_login = client.login(username='fakeUser', password='fakePass')
 
 successful_form_request = client.post(
     "/form/",
@@ -53,21 +57,21 @@ class FuelQuoteFormViewTest(TestCase):
         # self.assertEqual(response.status_code, 200)
         pass
 
-no_error_test = Client()
-response = no_error_test.post(
-    "/profile/",
-    {
-    "fullname": [""],
-    "add1": ["14455 Country Place Dr"],
-    "add2": ["318"],
-    "city": ["Houston"],
-    "zipcode": ["77449"],
-    "is_Submitted": ["true"]
-    },
-)
+# no_error_test = Client()
+# response = client.post(
+#     "/profile/",
+#     {
+#     "fullname": [""],
+#     "add1": ["14455 Country Place Dr"],
+#     "add2": ["318"],
+#     "city": ["Houston"],
+#     "zipcode": ["77449"],
+#     "is_Submitted": ["true"]
+#     },
+# )
 
-fullname_test = Client()
-response = fullname_test.post(
+# fullname_test = Client()
+response = newUser_noInfo.post(
     "/profile/",
     {
     "fullname": ["abc"],
@@ -79,44 +83,44 @@ response = fullname_test.post(
     },
 )
 
-add1_test = Client()
-response = add1_test.post(
-    "/profile/",
-    {
-    "fullname": ["Carlos Suarez"],
-    "add1": [""],
-    "add2": ["318"],
-    "city": ["Houston"],
-    "zipcode": ["77449"],
-    "is_Submitted": ["true"]
-    },
-)
+# add1_test = Client()
+# response = add1_test.post(
+#     "/profile/",
+#     {
+#     "fullname": ["Carlos Suarez"],
+#     "add1": [""],
+#     "add2": ["318"],
+#     "city": ["Houston"],
+#     "zipcode": ["77449"],
+#     "is_Submitted": ["true"]
+#     },
+# )
 
-add2_test = Client()
-response = add2_test.post(
-    "/profile/",
-    {
-    "fullname": ["Carlos Suarez"],
-    "add1": ["14455 Country Place Dr"],
-    "add2": ["desdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadsdesdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadsdesdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadsdesdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgads"],
-    "city": ["Houston"],
-    "zipcode": ["77449"],
-    "is_Submitted": ["true"]
-    },
-)
+# add2_test = Client()
+# response = add2_test.post(
+#     "/profile/",
+#     {
+#     "fullname": ["Carlos Suarez"],
+#     "add1": ["14455 Country Place Dr"],
+#     "add2": ["desdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadsdesdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadsdesdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadsdesdsfgdsfdsfhrdshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgadshfgdfdfagdfgads"],
+#     "city": ["Houston"],
+#     "zipcode": ["77449"],
+#     "is_Submitted": ["true"]
+#     },
+# )
 
-zip_test = Client()
-response = zip_test.post(
-    "/profile/",
-    {
-    "fullname": ["Carlos Suarez"],
-    "add1": ["14455 Country Place Dr"],
-    "add2": ["desdsfg"],
-    "city": ["Houston"],
-    "zipcode": ["123"],
-    "is_Submitted": ["true"]
-    },
-)
+# zip_test = Client()
+# response = zip_test.post(
+#     "/profile/",
+#     {
+#     "fullname": ["Carlos Suarez"],
+#     "add1": ["14455 Country Place Dr"],
+#     "add2": ["desdsfg"],
+#     "city": ["Houston"],
+#     "zipcode": ["123"],
+#     "is_Submitted": ["true"]
+#     },
+# )
 
 class ProfileViewTest(TestCase):
     @classmethod
@@ -174,6 +178,7 @@ response = c_empty_password.post(
     },
 )
 
+
 c_mismatch_password = Client()
 response = c_mismatch_password.post(
     "/register/",
@@ -215,7 +220,7 @@ response = c_login_wrong_username.post(
 )
 
 c_login_empty_password = Client()
-response = c_login_empty_password.post(
+response = client.post(
     "/",
     {
             'username': ['asd'], 
