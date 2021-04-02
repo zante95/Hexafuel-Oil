@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from .views import FuelQuoteFormView, ProfileView, RegisterView
+from .views import FuelQuoteFormView, ProfileView
 from django.contrib.auth.models import User
 
 
@@ -12,7 +12,7 @@ client = Client()
 newUser_noInfo = Client()
 logged_in = newUser_noInfo.login(username = 'user21', password = '123')
 
-request = client.post(
+#request = client.post()
 login = client.login(username=username, password=password)
 
 successful_form_request = client.post(
@@ -38,13 +38,36 @@ falied_gallon_form_request = client.post(
 falied_delivery_date_form_request = client.post(
     "/form/",
     {
-        "gallons": ["NUM"],
+        "gallons": ["150"],
         "delivery-address": ["123 st"],
         "delivery-date": ["2021-03-18"],
         "Calculate Cost": ["Calculate Cost"],
     },
 )
 
+failed_form_request = newUser_noInfo.post(
+    "/form/",
+    {
+        "gallons": ["4"],
+        "delivery-address": ["123 st"],
+        "delivery-date": ["2022-03-18"],
+        "Calculate Cost": ["Calculate Cost"],
+    },
+)
+
+successful_history_request = client.get(
+    "/history/",
+    {
+       
+    },
+)
+
+failed_history_request = newUser_noInfo.get(
+    "/history/",
+    {
+        
+    },
+)
 
 class FuelQuoteFormViewTest(TestCase):
     @classmethod
@@ -142,98 +165,98 @@ class ProfileViewTest(TestCase):
     def test_zip(self):
         pass
         
-c_wrong_email = Client()
-response = c_wrong_email.post(
-    "/register/",
-    {
-            'username': ['asd'], 
-            'email': ['asd@email'], 
-            'password1': ['123'], 
-            'password2': ['123'],
-            'isSubmitted': ['true']
-    },
-)
+# c_wrong_email = Client()
+# response = c_wrong_email.post(
+#     "/register/",
+#     {
+#             'username': ['asd'], 
+#             'email': ['asd@email'], 
+#             'password1': ['123'], 
+#             'password2': ['123'],
+#             'isSubmitted': ['true']
+#     },
+# )
 
-c_wrong_username = Client()
-response = c_wrong_username.post(
-    "/register/",
-    {
-            'username': ['thisismorethan10character'], 
-            'email': ['asd@email.com'], 
-            'password1': ['123'], 
-            'password2': ['123'],
-            'isSubmitted': ['true']
-    },
-)
+# c_wrong_username = Client()
+# response = c_wrong_username.post(
+#     "/register/",
+#     {
+#             'username': ['thisismorethan10character'], 
+#             'email': ['asd@email.com'], 
+#             'password1': ['123'], 
+#             'password2': ['123'],
+#             'isSubmitted': ['true']
+#     },
+# )
 
-c_empty_password = Client()
-response = c_empty_password.post(
-    "/register/",
-    {
-            'username': ['asd'], 
-            'email': ['asd@email.com'], 
-            'password1': ['123'], 
-            'password2': [''],
-            'isSubmitted': ['true']
-    },
-)
+# c_empty_password = Client()
+# response = c_empty_password.post(
+#     "/register/",
+#     {
+#             'username': ['asd'], 
+#             'email': ['asd@email.com'], 
+#             'password1': ['123'], 
+#             'password2': [''],
+#             'isSubmitted': ['true']
+#     },
+# )
 
 
-c_mismatch_password = Client()
-response = c_mismatch_password.post(
-    "/register/",
-    {
-            'username': ['asd'], 
-            'email': ['asd@email.com'], 
-            'password1': ['123'], 
-            'password2': ['125'],
-            'isSubmitted': ['true']
-    },
-)
+# c_mismatch_password = Client()
+# response = c_mismatch_password.post(
+#     "/register/",
+#     {
+#             'username': ['asd'], 
+#             'email': ['asd@email.com'], 
+#             'password1': ['123'], 
+#             'password2': ['125'],
+#             'isSubmitted': ['true']
+#     },
+# )
 
-class RegisterViewTest(TestCase):
+# class RegisterViewTest(TestCase):
     
-    @classmethod
-    def test_register_wrong_email(self):
-        #self.assertEqual(response.status_code, 200)
-        pass
+#     @classmethod
+#     def test_register_wrong_email(self):
+#         #self.assertEqual(response.status_code, 200)
+#         pass
 
-    @classmethod
-    def test_register_wrong_username(self):
-        pass
+#     @classmethod
+#     def test_register_wrong_username(self):
+#         pass
 
-    @classmethod
-    def test_register_empty_password(self):
-        pass
+#     @classmethod
+#     def test_register_empty_password(self):
+#         pass
 
-    @classmethod
-    def test_register_mismatch_password(self):
-        pass
+#     @classmethod
+#     def test_register_mismatch_password(self):
+#         pass
 
-c_login_wrong_username = Client()
-response = c_login_wrong_username.post(
-    "/",
-    {
-            'username': ['thisismorethan10character'], 
-            'password': ['123']
-    },
-)
+# c_login_wrong_username = Client()
+# response = c_login_wrong_username.post(
+#     "/",
+#     {
+#             'username': ['thisismorethan10character'], 
+#             'password': ['123']
+#     },
+# )
 
-c_login_empty_password = Client()
-response = client.post(
-    "/",
-    {
-            'username': ['asd'], 
-            'password': ['']
-    },
-)
+# c_login_empty_password = Client()
+# response = client.post(
+#     "/",
+#     {
+#             'username': ['asd'], 
+#             'password': ['']
+#     },
+# )
 
-class HomeViewTest(TestCase):
+# class HomeViewTest(TestCase):
      
-    @classmethod
-    def test_login_wrong_username(self):
-        pass
+#     @classmethod
+#     def test_login_wrong_username(self):
+#         pass
 
-    @classmethod
-    def test_login_empty_password(self):
-        pass
+#     @classmethod
+#     def test_login_empty_password(self):
+#         pass

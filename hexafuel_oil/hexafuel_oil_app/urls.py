@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
-from .views import FuelQuoteFormView, ProfileView, HomeView, RegisterView, LoginView, RegisterView2, LogoutView, HistoryView
+from .views import FuelQuoteFormView, ProfileView, LoginView, RegisterView2, LogoutView, HistoryView
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
