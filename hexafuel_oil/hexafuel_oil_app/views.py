@@ -67,8 +67,8 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
 
         print('DATE', date_time_obj)
         queryset = ClientInformation.objects.all()
-        client_id = queryset.get(username_id = request.user.id).id
-        delivery_address = queryset.get(username_id = request.user.id).address1
+        client_id = queryset.get(auth_user_id_id = request.user.id).id
+        delivery_address = queryset.get(auth_user_id_id = request.user.id).address1
         quote = FuelQuote(
           gallons=gallons, 
           deliver_address=delivery_address, 
@@ -92,7 +92,7 @@ class HistoryView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
 
     def get(self, request):
         clients_queryset = ClientInformation.objects.all()
-        client_id = clients_queryset.get(username_id = request.user.id).id
+        client_id = clients_queryset.get(auth_user_id_id = request.user.id).id
         quotes_queryset = FuelQuote.objects.all()
         quotes = quotes_queryset.filter(client_id_id = client_id)
         args = {'quotes' : quotes}
