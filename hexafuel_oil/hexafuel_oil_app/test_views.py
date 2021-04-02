@@ -1,13 +1,41 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from .views import FuelQuoteFormView, ProfileView, RegisterView
+from django.contrib.auth.models import User
 
-c = Client()
-request = c.post(
+
+username = 'user1'
+password = '123'
+
+client = Client()
+login = client.login(username=username, password=password)
+# failed_login = client.login(username='fakeUser', password='fakePass')
+
+successful_form_request = client.post(
     "/form/",
     {
         "gallons": ["4"],
-        "delivery-address": [""],
+        "delivery-address": ["123 st"],
+        "delivery-date": ["2022-03-18"],
+        "Calculate Cost": ["Calculate Cost"],
+    },
+)
+
+falied_gallon_form_request = client.post(
+    "/form/",
+    {
+        "gallons": ["NUM"],
+        "delivery-address": ["123 st"],
+        "delivery-date": ["2021-03-18"],
+        "Calculate Cost": ["Calculate Cost"],
+    },
+)
+
+falied_delivery_date_form_request = client.post(
+    "/form/",
+    {
+        "gallons": ["NUM"],
+        "delivery-address": ["123 st"],
         "delivery-date": ["2021-03-18"],
         "Calculate Cost": ["Calculate Cost"],
     },

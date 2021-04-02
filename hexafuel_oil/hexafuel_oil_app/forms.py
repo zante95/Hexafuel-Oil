@@ -24,6 +24,7 @@ class LoginForm(forms.Form):
         if user is None:
             raise forms.ValidationError("Invalid credentials")
         login(request, user)
+        # print('LOGIN REQUEST', request.POST)
         self.user = user
         return data
 
