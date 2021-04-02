@@ -66,25 +66,29 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
             if date_time_obj < datetime.datetime.now():
                 return JsonResponse({"ValidationError": "Choose a latter date."})
 
-        print('DATE', date_time_obj)
-        queryset = ClientInformation.objects.all()
-        client_id = queryset.get(auth_user_id_id = request.user.id).id
-        delivery_address = queryset.get(auth_user_id_id = request.user.id).address1
-        quote = FuelQuote(
-          gallons=gallons, 
-          deliver_address=delivery_address, 
-          delivery_date = delivery_date_str, 
-          suggested_price_per_gallons = '1.23', 
-          total_amount_due = '23', 
-          client_id_id = client_id
-        )
+        try:
+          # print('DATE', date_time_obj)
+          queryset = ClientInformation.objects.all()
+          client_id = queryset.get(auth_user_id_id = request.user.id).id
+          delivery_address = queryset.get(auth_user_id_id = request.user.id).address1
+          quote = FuelQuote(
+            gallons=gallons, 
+            deliver_address=delivery_address, 
+            delivery_date = delivery_date_str, 
+            suggested_price_per_gallons = '1.23', 
+            total_amount_due = '23', 
+            client_id_id = client_id
+          )
+          quote.save()
 
-        quote.save()
-        
-        return render(
-            request,
-            "hexafuel_oil_app/fuel_quote.html",
-        )
+          return render(
+              request,
+              "hexafuel_oil_app/fuel_quote.html",
+          )
+        except Exception as e:
+          print('EXP', e)
+          return JsonResponse({"AccessError": "Please fill out profile information."})
+          
 
 
 class HistoryView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
@@ -92,12 +96,17 @@ class HistoryView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     template_name = "hexafuel_oil_app/history.html"
 
     def get(self, request):
+      try:
         clients_queryset = ClientInformation.objects.all()
         client_id = clients_queryset.get(auth_user_id_id = request.user.id).id
         quotes_queryset = FuelQuote.objects.all()
         quotes = quotes_queryset.filter(client_id_id = client_id)
         args = {'quotes' : quotes}
         return render(request, "hexafuel_oil_app/history.html", args)
+      except Exception as e:
+        print('EXP', e)
+        return render(request, "hexafuel_oil_app/history.html")
+
 
 
 class RegisterView(TemplateView):
