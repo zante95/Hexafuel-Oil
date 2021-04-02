@@ -7,8 +7,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .mixins import NextUrlMixin, RequestFormAttachMixin
 from .forms import LoginForm, RegisterForm
-
-# Create your views here.
+from .models import FuelQuote, ClientInformation
 
 class HomeView(TemplateView):
     template_name = "hexafuel_oil_app/login.html"
@@ -38,7 +37,7 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
     permission_required = ("auth.change_user")
 
     def post(self, request, *args, **kwargs):
-       
+        # print("CLIENTINFORMATION", request.__dict__)      
         print("REQUEST", request.POST)
         # print("BOOL", bool(request.POST))
         # print("REQUEST", request.POST)
@@ -66,10 +65,38 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
             if date_time_obj < datetime.datetime.now():
                 return JsonResponse({"ValidationError": "Choose a latter date."})
 
+        print('DATE', date_time_obj)
+        queryset = ClientInformation.objects.all()
+        client_id = queryset.get(username_id = request.user.id).id
+        delivery_address = queryset.get(username_id = request.user.id).address1
+        quote = FuelQuote(
+          gallons=gallons, 
+          deliver_address=delivery_address, 
+          delivery_date = delivery_date_str, 
+          suggested_price_per_gallons = '1.23', 
+          total_amount_due = '23', 
+          client_id_id = client_id
+        )
+
+        quote.save()
+        
         return render(
             request,
             "hexafuel_oil_app/fuel_quote.html",
         )
+
+
+class HistoryView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
+    permission_required = ("auth.change_user")
+    template_name = "hexafuel_oil_app/history.html"
+
+    def get(self, request):
+        clients_queryset = ClientInformation.objects.all()
+        client_id = clients_queryset.get(username_id = request.user.id).id
+        quotes_queryset = FuelQuote.objects.all()
+        quotes = quotes_queryset.filter(client_id_id = client_id)
+        args = {'quotes' : quotes}
+        return render(request, "hexafuel_oil_app/history.html", args)
 
 
 class RegisterView(TemplateView):
@@ -109,11 +136,7 @@ class RegisterView(TemplateView):
             if (not(email_regex.match(email))):
                 return JsonResponse({"ValidationError": "email is not valid."})
 
-        return render(request, 'hexafuel_oil_app/register.html')
-
-
-def history(request): # pragma: no cover
-    return render(request, 'hexafuel_oil_app/history.html')
+        return render(request, 'hexafuel_oil_app/register.html')  
 
 
 class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):

@@ -32,7 +32,7 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = [] # Username & Password are required by default.
 
     def __str__(self):              # __unicode__ on Python 2
-        return self.email
+        return self.username
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
@@ -52,8 +52,8 @@ class User(AbstractBaseUser):
         "Is the user active?"
         return self.active
     
-class UserCredentials():
-  username = models.OneToOneField(User, on_delete = models.DO_NOTHING)
+# class UserCredentials():
+#   username = models.OneToOneField(User, on_delete = models.DO_NOTHING)
 
 class ClientInformation(models.Model):
     class States(models.TextChoices):
