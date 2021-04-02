@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from .mixins import NextUrlMixin, RequestFormAttachMixin
 from .forms import LoginForm, RegisterForm
 from .models import FuelQuote, ClientInformation
+from django.contrib.auth.models import User
 
 class HomeView(TemplateView):
     template_name = "hexafuel_oil_app/login.html"
@@ -149,6 +150,7 @@ class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
         fullname = str(request.POST.get('fullname'))
         add1 = str(request.POST.get('address1'))
         add2 = str(request.POST.get('address2'))
+        state = str(request.POST.get('state'))
         city = str(request.POST.get('city'))
         zipcode = str(request.POST.get('zipcode'))
         is_Submitted = str(request.POST.get('is_Submitted'))
@@ -171,6 +173,20 @@ class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
  
             if len(zipcode) != 5:
                 return JsonResponse({"ValidationError": "City needs to be 5 characters long."})
+
+        queryset = User.objects.all()
+        auth_user_id = request.user.id
+        client_Info = ClientInformation(
+            auth_user_id_id = auth_user_id,
+            fullname = fullname,
+            address1 = add1,
+            address2 = add2,
+            city = city,
+            state = state,
+            zipcode = zipcode,
+        )
+        client_Info.save()
+
  
         return render(request, 'hexafuel_oil_app/account_settings.html')
 
