@@ -150,10 +150,22 @@ class HistoryView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
 
 
 class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
-   template_name = "hexafuel_oil_app/account_settings.html"
-   permission_required = ("auth.change_user")
+    template_name = "hexafuel_oil_app/account_settings.html"
+    permission_required = ("auth.change_user")
 
-   def post(self, request, *args, **kwargs):
+    def get(self, request):
+        try:
+            clients_queryset = ClientInformation.objects.all()
+            client = clients_queryset.get(auth_user_id_id = request.user.id)
+            # quotes_queryset = FuelQuote.objects.all()
+            # quotes = quotes_queryset.filter(client_id_id = client_id)
+            args = {'client' : client}
+            return render(request, "hexafuel_oil_app/account_settings.html", args)
+        except Exception as e:
+            print('EXP', e)
+            return render(request, "hexafuel_oil_app/account_settings.html")
+
+    def post(self, request, *args, **kwargs):
     #    fullname, address1, address2, city, zipcode
         print("REQUEST", request.POST)
         fullname = str(request.POST.get('fullname'))
@@ -182,22 +194,23 @@ class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
  
             if len(zipcode) != 5:
                 return JsonResponse({"ValidationError": "City needs to be 5 characters long."})
-
-        queryset = User.objects.all()
         auth_user_id = request.user.id
-        client_Info = ClientInformation(
+        obj, created = ClientInformation.objects.update_or_create(
             auth_user_id_id = auth_user_id,
-            fullname = fullname,
-            address1 = add1,
-            address2 = add2,
-            city = city,
-            state = state,
-            zipcode = zipcode,
-        )
-        client_Info.save()
 
- 
-        return render(request, 'hexafuel_oil_app/account_settings.html')
+            defaults = {  
+            'auth_user_id_id' : auth_user_id,
+            'fullname' : fullname,
+            'address1' : add1,
+            'address2' : add2,
+            'city' : city,
+            'state' : state,
+            'zipcode' : zipcode
+            }
+        )
+        args = {'messages' : 'Your Profile has been Updated successfully!'} 
+        # messages.info(request, 'Your Profile has been Updated successfully!')
+        return render(request, 'hexafuel_oil_app/account_settings.html', args)
 
 
 class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):

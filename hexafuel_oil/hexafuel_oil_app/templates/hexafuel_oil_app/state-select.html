@@ -1,10 +1,11 @@
 <div class="input-group mb-2">
     <div class="input-group-append">
+        <label for="fullname">State</label>&nbsp &nbsp
         <span class="input-group-text"><i class="fas fa-map"></i></span>
     </div>
 
     <select id="state-select" class="form-control" name="state" required>
-        <option selected disabled value="">State..</option>
+        <option selected disabled value="{{ client.state }}">{{ client.state }}</option>
         <option value="AL">Alabama</option>
         <option value="AK">Alaska</option>
         <option value="AZ">Arizona</option>

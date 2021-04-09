@@ -5,6 +5,10 @@
 
 	{% include 'hexafuel_oil_app/navbar.html'%}
 
+		{% if messages %}
+			<div class="alert alert-info alert-dismissable">{{ messages }}</div>
+		{% endif %}
+	
 	<style>
 		.profile-pic{
 			max-width: 200px;
@@ -34,44 +38,49 @@
 					{% csrf_token %}
 					<div class="input-group mb-2">
 						<div class="input-group-append">
+							<label for="fullname">Fullname</label>&nbsp &nbsp
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
 						
-						<input type="text" name="fullname" class="form-control" required>
+						<input type="text" name='fullname' class="form-control" required placeholder={{ client.fullname }}> 
 					</div>
 
 					<div class="input-group mb-2">
 						<div class="input-group-append">
+							<label for="fullname">Address 1</label>&nbsp &nbsp
 							<span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
 						</div>
 						
-						<input type="text" name="address1" class="form-control" required>
+						<input type="text" name="address1" class="form-control" required placeholder={{ client.address1 }}>
 					</div>
 
 					<div class="input-group mb-2">
 						<div class="input-group-append">
+							<label for="fullname">Address 2</label>&nbsp &nbsp
 							<span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
 						</div>
 						
-						<input type="text" name="address2" class="form-control">
+						<input type="text" name="address2" class="form-control" placeholder={{ client.address2 }}>
 					</div>
 
 					<div class="input-group mb-2">
 						<div class="input-group-append">
+							<label for="fullname">City</label>&nbsp &nbsp
 							<span class="input-group-text"><i class="fas fa-building"></i></span>
 						</div>
 						
-						<input type="text" name="city" class="form-control" required>
+						<input type="text" name="city" class="form-control" required placeholder={{ client.city }}>
 					</div>
 
 					{% include 'hexafuel_oil_app/state-select.html' %}
 
 					<div class="input-group mb-2">
 						<div class="input-group-append">
+							<label for="fullname">ZipCode</label>&nbsp &nbsp
 							<span class="input-group-text"><i class="fas fa-map"></i></span>
 						</div>
 						
-						<input type="text" name="zipcode" class="form-control" required>
+						<input type="text" name="zipcode" class="form-control" required placeholder={{ client.zipcode }}>
 					</div>
 					<input type="hidden" name="is_Submitted" value="">
 				<input class="btn btn-primary" type="submit" name="Update Information" value="Update Information">
