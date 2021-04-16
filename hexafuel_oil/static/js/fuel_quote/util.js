@@ -2,7 +2,7 @@
 var form_fields = document.getElementsByTagName('input')
 
 form_fields[1].placeholder = 'Gallons';
-form_fields[2].placeholder = '1234 Fake Address';
+// form_fields[2].placeholder = '1234 Fake Address';
 form_fields[3].placeholder = 'Delivery Date';
 
 

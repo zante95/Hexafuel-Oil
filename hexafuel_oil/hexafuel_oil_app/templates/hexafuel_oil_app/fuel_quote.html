@@ -24,7 +24,7 @@
         <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
       </div>
 
-      <input type="text" name="delivery-address" class="form-control" readonly>
+      <input type="text" name="delivery-address" class="form-control" readonly value="{{ client.address1 }}">
     </div>
 
     <div class="input-group mb-2">
@@ -38,10 +38,10 @@
     <div class="alert alert-warning cost-group" role="alert">
       <div class="row">
         <div class="col-md-4">
-          Cost per Gallons: $4.12
+          Cost per Gallons: ${{ cost_per_gallons }}
         </div>
         <div class="col-md-4 offset-md-4">
-          <h4>Total Cost: $100</h4>
+          <h4>Total Cost: ${{ total }}</h4>
         </div>
       </div>
     </div>

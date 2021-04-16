@@ -37,6 +37,48 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
     template_name = "hexafuel_oil_app/fuel_quote.html"
     permission_required = ("auth.change_user")
 
+    def calculatePrice(self, user_id, location, gallons):
+          current_price_per_gallons = 1.50
+          company_profit_factor = 0.1
+
+          if location == 'TX':
+            location_factor = 0.02
+          else:
+            location_factor = 0.04
+
+          clients_queryset = ClientInformation.objects.all()
+          client_id = clients_queryset.get(auth_user_id_id = user_id).id
+          quotes_queryset = FuelQuote.objects.all()
+          quotes = quotes_queryset.filter(client_id_id = client_id)
+          
+          if len(quotes) > 0:
+            rate_history_factor = 0.01
+          else:
+            rate_history_factor = 0
+          
+          if int(gallons) >= 1000:
+            gallons_requested_factor = 0.02
+          else:
+            gallons_requested_factor = 0.03
+
+          margin = current_price_per_gallons * (location_factor - rate_history_factor + gallons_requested_factor + company_profit_factor)
+
+          suggested_price_per_gallons = current_price_per_gallons + margin
+          # return location,margin,suggested_price_per_gallons,(suggested_price_per_gallons * int(gallons))
+          return suggested_price_per_gallons * int(gallons),suggested_price_per_gallons
+    
+    def get(self, request):
+        try:
+            clients_queryset = ClientInformation.objects.all()
+            client = clients_queryset.get(auth_user_id_id = request.user.id)
+            # quotes_queryset = FuelQuote.objects.all()
+            # quotes = quotes_queryset.filter(client_id_id = client_id)
+            args = {'client' : client}
+            return render(request, "hexafuel_oil_app/fuel_quote.html", args)
+        except Exception as e:
+            print('EXP', e)
+            return render(request, "hexafuel_oil_app/fuel_quote.html")
+    
     def post(self, request, *args, **kwargs):
         # print("CLIENTINFORMATION", request.__dict__)      
         print("REQUEST", request.POST)
@@ -63,6 +105,7 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
 
             date_time_obj = datetime.datetime.strptime(delivery_date_str, "%Y-%m-%d")
 
+
             if date_time_obj < datetime.datetime.now():
                 return JsonResponse({"ValidationError": "Choose a latter date."})
 
@@ -71,6 +114,7 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
           queryset = ClientInformation.objects.all()
           client_id = queryset.get(auth_user_id_id = request.user.id).id
           delivery_address = queryset.get(auth_user_id_id = request.user.id).address1
+          client = queryset.get(auth_user_id_id = request.user.id)
           quote = FuelQuote(
             gallons=gallons, 
             deliver_address=delivery_address, 
@@ -80,10 +124,15 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
             client_id_id = client_id
           )
           quote.save()
-
+          
+          total,cost_per_gallons = self.calculatePrice(request.user.id, queryset.get(auth_user_id_id = request.user.id).state, gallons)
+          print('HERE', total, cost_per_gallons)
+          # args = {'client' : client, 'total' : total, 'cost_per_gallons' : cost_per_gallons}
+          args = {'client' : client}
+          print('HERE', str(client.address1))
           return render(
               request,
-              "hexafuel_oil_app/fuel_quote.html",
+              "hexafuel_oil_app/fuel_quote.html", args
           )
         except Exception as e:
           print('EXP', e)
