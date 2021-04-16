@@ -32,7 +32,7 @@ from django.contrib.auth.models import User
 
 #         return render(request, 'hexafuel_oil_app/login.html')
 
-
+# need to add ajax functionality to get the price quote before doing a form submission
 class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     template_name = "hexafuel_oil_app/fuel_quote.html"
     permission_required = ("auth.change_user")
