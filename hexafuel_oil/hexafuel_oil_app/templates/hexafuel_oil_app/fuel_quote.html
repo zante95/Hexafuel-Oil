@@ -9,14 +9,15 @@
 <br>
 
 <div class="form_container">
-  <form name="fuel-form" method="POST" action="" enctype="multipart/form-data" onsubmit="return validateForm()">
+  <form id="fuel-quote-form" name="fuel-form" method="POST" action="" enctype="multipart/form-data"
+    onsubmit="return validateForm()">
     {% csrf_token %}
     <div class="input-group mb-2">
       <div class="input-group-append">
         <span class="input-group-text"><i class="fas fa-fill-drip"></i></span>
       </div>
 
-      <input type="text" name="gallons" class="form-control" required>
+      <input type="text" id="gallons" name="gallons" class="form-control" required>
     </div>
 
     <div class="input-group mb-2">
@@ -24,7 +25,8 @@
         <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
       </div>
 
-      <input type="text" name="delivery-address" class="form-control" readonly value="{{ client.address1 }}">
+      <input type="text" id="delivery-address" name="delivery-address" class="form-control" readonly
+        value="{{ client.address1 }}">
     </div>
 
     <div class="input-group mb-2">
@@ -32,7 +34,7 @@
         <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
       </div>
 
-      <input type="date" name="delivery-date" class="form-control" required>
+      <input type="date" id="delivery-date" name="delivery-date" class="form-control" required>
     </div>
 
     <div class="alert alert-warning cost-group" role="alert">
@@ -45,67 +47,9 @@
         </div>
       </div>
     </div>
-    <input class="btn btn-primary centered" type="submit" name="Calculate Cost" value="Calculate Cost" onclick="">
+    <input class="btn btn-primary centered" type="submit" name="Calculate Cost" value="Submit">
+    <input class="btn btn-primary centered" type="submit" name="Calculate Cost" value="Get Quote">
   </form>
-
-  <!-- <div class="card card-body profile-change-card-side">
-    <table class="table table-sm table-hover" id="show">
-      <thread>
-        <tr>
-          <th>Name</th>
-          <th>State</th>
-          <th>Requested</th>
-          <th>Address</th>
-          <th>Date</th>
-          <th>Suggested Price/Gallon</th>
-          <th>Total</th>
-        </tr>
-
-        <tr>
-          <td>Johnny Appleseed</td>
-          <td>In-state</td>
-          <td>47.3 GAL</td>
-          <td>4922 Creekwood Lane</td>
-          <td>2/4/2021</td>
-          <td>xx.xx</td>
-          <td>$1,421</td>
-        </tr>
-      </thread>
-    </table>
-  </div>
-</div>
-
-</div>
-
-<script>
-  var list1 = [];
-  var list2 = [];
-  var list3 = [];
-
-  var n = 1;
-  var x = 0;
-
-  function AddQuote() {
-    console.log('HERE')
-    var AddQuote = document.getElementById('show');
-    var NewQuote = AddQuote.insertRow(n);
-
-    list1[x] = document.getElementById('gallons').value;
-    list2[x] = document.getElementById('delivery-address').value;
-    list3[x] = document.getElementById('delivery-date').value;
-
-    var cel1 = NewQuote.insertCell(1);
-    var cel2 = NewQuote.insertCell(2);
-    var cel3 = NewQuote.insertCell(3);
-
-    cel1.innerHTML = list1[x];
-    cel2.innerHTML = list2[x];
-    cel3.innerHTML = list3[x];
-
-    n++;
-    x++;
-  } -->
-  <!-- </script> -->
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -118,5 +62,28 @@
     crossorigin="anonymous"></script>
 
   <script src="{% static 'js/fuel_quote/util.js' %}"></script>
+
+
+  <!-- https://www.youtube.com/watch?v=KgnPSmrQrXI&t=465s&ab_channel=Codebites -->
+  <!-- <script type="text/javascript">
+    $(document).on('submit', '#fuel-quote-form', function (e) {
+      e.preventDefault(); // Prevent page refresh
+
+      $.ajax({
+        type: 'POST',
+        url: '/form/',
+        data: {
+          gallons: $('#gallons').val(),
+          address: $('#delivery-address').val(),
+          date: $('#delivery-date').val(),
+        },
+        success: function () {
+
+        }
+      })
+    });
+
+
+  </script> -->
 
   {% endblock %}

@@ -115,21 +115,20 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
           client_id = queryset.get(auth_user_id_id = request.user.id).id
           delivery_address = queryset.get(auth_user_id_id = request.user.id).address1
           client = queryset.get(auth_user_id_id = request.user.id)
+          
+          total,cost_per_gallons = self.calculatePrice(request.user.id, queryset.get(auth_user_id_id = request.user.id).state, gallons)
+          args = {'client' : client}
+          print('HERE', total, cost_per_gallons)
           quote = FuelQuote(
             gallons=gallons, 
             deliver_address=delivery_address, 
             delivery_date = delivery_date_str, 
-            suggested_price_per_gallons = '1.23', 
-            total_amount_due = '23', 
+            suggested_price_per_gallons = cost_per_gallons, 
+            total_amount_due = total, 
             client_id_id = client_id
           )
           quote.save()
-          
-          total,cost_per_gallons = self.calculatePrice(request.user.id, queryset.get(auth_user_id_id = request.user.id).state, gallons)
-          print('HERE', total, cost_per_gallons)
-          # args = {'client' : client, 'total' : total, 'cost_per_gallons' : cost_per_gallons}
-          args = {'client' : client}
-          print('HERE', str(client.address1))
+
           return render(
               request,
               "hexafuel_oil_app/fuel_quote.html", args
