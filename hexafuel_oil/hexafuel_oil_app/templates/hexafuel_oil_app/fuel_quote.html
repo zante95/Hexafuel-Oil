@@ -67,13 +67,8 @@
     crossorigin="anonymous"></script>
 
   <script src="{% static 'js/fuel_quote/util.js' %}"></script>
-
-
-  <!-- https://www.youtube.com/watch?v=KgnPSmrQrXI&t=465s&ab_channel=Codebites -->
   <script type="text/javascript">
     $(document).on('click', '#calculate', function (e) {
-      // $('#calculate').click(function () {
-      // e.preventDefault(); // Prevent page refresh
 
       $.get('/calculate', {
         gallons: $('#gallons').val(),
