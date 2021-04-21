@@ -3,96 +3,99 @@
 {% load static %}
 {% block content %}
 
-	{% include 'hexafuel_oil_app/navbar.html'%}
+{% include 'hexafuel_oil_app/navbar.html'%}
 
-		{% if messages %}
-			<div class="alert alert-info alert-dismissable">{{ messages }}</div>
-		{% endif %}
-	
-	<style>
-		.profile-pic{
-			max-width: 200px;
-			max-height:200px;
-			margin: 0 auto;
-			border-radius: 50%;
-		}
-	</style>
+{% if messages %}
+<div class="alert alert-info alert-dismissable">{{ messages }}</div>
+{% endif %}
 
-	<br>
-	<div class="row">
-		<div class="col-md-3">
-			<div class="card card-body profile-change-card-side">
-				<a class="btn btn-primary form-control" href="fuel_quote.html"> &#8592; Back to Dashboard / Fuel Quote Form</a>
-				<hr>
-				<h3 style="text-align: center">Account Settings</h3>
-				<hr>
-				<img class="profile-pic" src="{% static 'images/profile1.png' %}" >
-			
-			</div>
-		</div>
-		<div class="col-md-9">
-			<div class="card card-body profile-change-card">
-				
-				<form method="POST" action="" enctype="multipart/form-data" name="profile-form" onsubmit="return validateForm()">
-					
-					{% csrf_token %}
-					<div class="input-group mb-2">
-						<div class="input-group-append">
-							<label for="fullname">Fullname</label>&nbsp &nbsp
-							<span class="input-group-text"><i class="fas fa-user"></i></span>
-						</div>
-						
-						<input type="text" name='fullname' class="form-control" required placeholder={{ client.fullname }}> 
-					</div>
+<style>
+  .profile-pic {
+    max-width: 200px;
+    max-height: 200px;
+    margin: 0 auto;
+    border-radius: 50%;
+  }
+</style>
 
-					<div class="input-group mb-2">
-						<div class="input-group-append">
-							<label for="fullname">Address 1</label>&nbsp &nbsp
-							<span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-						</div>
-						
-						<input type="text" name="address1" class="form-control" required placeholder={{ client.address1 }}>
-					</div>
+<br>
+<div class="row">
+  <div class="col-md-3">
+    <div class="card card-body profile-change-card-side">
+      <a class="btn btn-primary form-control" href="fuel_quote.html"> &#8592; Back to Dashboard / Fuel Quote Form</a>
+      <hr>
+      <h3 style="text-align: center">Account Settings</h3>
+      <hr>
+      <img class="profile-pic" src="{% static 'images/profile1.png' %}">
 
-					<div class="input-group mb-2">
-						<div class="input-group-append">
-							<label for="fullname">Address 2</label>&nbsp &nbsp
-							<span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-						</div>
-						
-						<input type="text" name="address2" class="form-control" placeholder={{ client.address2 }}>
-					</div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="card card-body profile-change-card">
 
-					<div class="input-group mb-2">
-						<div class="input-group-append">
-							<label for="fullname">City</label>&nbsp &nbsp
-							<span class="input-group-text"><i class="fas fa-building"></i></span>
-						</div>
-						
-						<input type="text" name="city" class="form-control" required placeholder={{ client.city }}>
-					</div>
+      <form method="POST" action="" enctype="multipart/form-data" name="profile-form" onsubmit="return validateForm()">
 
-					{% include 'hexafuel_oil_app/state-select.html' %}
+        {% csrf_token %}
+        <div class="input-group mb-2">
+          <div class="input-group-append">
+            <label for="fullname">Fullname</label>&nbsp &nbsp
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
 
-					<div class="input-group mb-2">
-						<div class="input-group-append">
-							<label for="fullname">ZipCode</label>&nbsp &nbsp
-							<span class="input-group-text"><i class="fas fa-map"></i></span>
-						</div>
-						
-						<input type="text" name="zipcode" class="form-control" required placeholder={{ client.zipcode }}>
-					</div>
-					<input type="hidden" name="is_Submitted" value="">
-				<input class="btn btn-primary" type="submit" name="Update Information" value="Update Information">
-				</form>
-			</div>
-		</div>
-	</div>
+          <input type="text" name='fullname' class="form-control" required value="{{ client.fullname }}">
+        </div>
 
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <div class="input-group mb-2">
+          <div class="input-group-append">
+            <label for="fullname">Address 1</label>&nbsp &nbsp
+            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+          </div>
 
-	<script src="{% static 'js/account_settings/util.js' %}"></script>
+          <input type="text" name="address1" class="form-control" required value="{{ client.address1 }}">
+        </div>
+
+        <div class="input-group mb-2">
+          <div class="input-group-append">
+            <label for="fullname">Address 2</label>&nbsp &nbsp
+            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+          </div>
+
+          <input type="text" name="address2" class="form-control" value="{{ client.address2 }}">
+        </div>
+
+        <div class="input-group mb-2">
+          <div class="input-group-append">
+            <label for="fullname">City</label>&nbsp &nbsp
+            <span class="input-group-text"><i class="fas fa-building"></i></span>
+          </div>
+
+          <input type="text" name="city" class="form-control" required value="{{ client.city }}">
+        </div>
+
+        {% include 'hexafuel_oil_app/state-select.html' %}
+
+        <div class="input-group mb-2">
+          <div class="input-group-append">
+            <label for="fullname">ZipCode</label>&nbsp &nbsp
+            <span class="input-group-text"><i class="fas fa-map"></i></span>
+          </div>
+
+          <input type="text" name="zipcode" class="form-control" required value="{{ client.zipcode }}">
+        </div>
+        <input type="hidden" name="is_Submitted" value="">
+        <input class="btn btn-primary" type="submit" name="Update Information" value="Update Information">
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="{% static 'js/account_settings/util.js' %}"></script>
 
 {% endblock %}

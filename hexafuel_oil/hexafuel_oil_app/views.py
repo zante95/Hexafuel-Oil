@@ -10,40 +10,93 @@ from .forms import LoginForm, RegisterForm
 from .models import FuelQuote, ClientInformation
 from django.contrib.auth.models import User
 
-# class HomeView(TemplateView):
-#     template_name = "hexafuel_oil_app/login.html"
 
-#     def post(self, request, *args, **kwargs):
+def calculatePrice(request):
+      if request.method == 'GET':
+        queryset = ClientInformation.objects.all()
+        location = queryset.get(auth_user_id_id = request.user.id).state
+        gallons = str(request.GET.get("gallons"))
 
-#         print("REQUEST", request.POST)
-#         username = str(request.POST.get('username'))
-#         pwd = str(request.POST.get('password'))
+        current_price_per_gallons = 1.50
+        company_profit_factor = 0.1
+
+        if location == 'TX':
+          location_factor = 0.02
+        else:
+          location_factor = 0.04
+
+        clients_queryset = ClientInformation.objects.all()
+        client_id = clients_queryset.get(auth_user_id_id = request.user.id).id
+        quotes_queryset = FuelQuote.objects.all()
+        quotes = quotes_queryset.filter(client_id_id = client_id)
         
-#         self.object = []
-
-#         print(type(username)) #-> <class 'str'>
-#         print(type(pwd)) #-> <class 'str'>
+        if len(quotes) > 0:
+          rate_history_factor = 0.01
+        else:
+          rate_history_factor = 0
         
-#         if (username == "") or (len(username) > 10):
-#             return JsonResponse({"ValidationError": "username cannot be empty or cannot exceed 10 chars."})
+        if int(gallons) >= 1000:
+          gallons_requested_factor = 0.02
+        else:
+          gallons_requested_factor = 0.03
 
-#         if pwd == "":
-#             return JsonResponse({"ValidationError": "password cannot be empty."})
+        margin = current_price_per_gallons * (location_factor - rate_history_factor + gallons_requested_factor + company_profit_factor)
 
-#         return render(request, 'hexafuel_oil_app/login.html')
+        suggested_price_per_gallons = current_price_per_gallons + margin
+        total_result = suggested_price_per_gallons * int(gallons)
+        price_result = suggested_price_per_gallons
+        args = {'price_result':price_result, 'total_result':total_result}
+        return JsonResponse(args) # Sending an success response
+
+      else:
+        return HttpResponse("Request method is not a GET")
 
 
+# ajax functionality was added to get the price quote before doing a form submission
 class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     template_name = "hexafuel_oil_app/fuel_quote.html"
     permission_required = ("auth.change_user")
 
-    def post(self, request, *args, **kwargs):
-        # print("CLIENTINFORMATION", request.__dict__)      
-        print("REQUEST", request.POST)
-        # print("BOOL", bool(request.POST))
-        # print("REQUEST", request.POST)
-        # data = request.POST.copy()
+    def calculatePrice(self, user_id, location, gallons):
+          current_price_per_gallons = 1.50
+          company_profit_factor = 0.1
 
+          if location == 'TX':
+            location_factor = 0.02
+          else:
+            location_factor = 0.04
+
+          clients_queryset = ClientInformation.objects.all()
+          client_id = clients_queryset.get(auth_user_id_id = user_id).id
+          quotes_queryset = FuelQuote.objects.all()
+          quotes = quotes_queryset.filter(client_id_id = client_id)
+          
+          if len(quotes) > 0:
+            rate_history_factor = 0.01
+          else:
+            rate_history_factor = 0
+          
+          if int(gallons) >= 1000:
+            gallons_requested_factor = 0.02
+          else:
+            gallons_requested_factor = 0.03
+
+          margin = current_price_per_gallons * (location_factor - rate_history_factor + gallons_requested_factor + company_profit_factor)
+
+          suggested_price_per_gallons = current_price_per_gallons + margin
+          return suggested_price_per_gallons * int(gallons),suggested_price_per_gallons
+    
+    def get(self, request):
+        try:
+            clients_queryset = ClientInformation.objects.all()
+            client = clients_queryset.get(auth_user_id_id = request.user.id)
+            args = {'client' : client}
+            return render(request, "hexafuel_oil_app/fuel_quote.html", args)
+        except Exception as e:
+            print('EXP', e)
+            return render(request, "hexafuel_oil_app/fuel_quote.html")
+    
+    def post(self, request, *args, **kwargs):
         self.object = []
 
         if bool(request.POST):
@@ -58,38 +111,38 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
                     {"ValidationError": "Gallons must be a whole number."}
                 )
 
-            # if not True:
-            #     return JsonResponse({"ValidationError": "Delivery address does not match"})
-
             date_time_obj = datetime.datetime.strptime(delivery_date_str, "%Y-%m-%d")
+
 
             if date_time_obj < datetime.datetime.now():
                 return JsonResponse({"ValidationError": "Choose a latter date."})
 
         try:
-          # print('DATE', date_time_obj)
           queryset = ClientInformation.objects.all()
           client_id = queryset.get(auth_user_id_id = request.user.id).id
           delivery_address = queryset.get(auth_user_id_id = request.user.id).address1
+          client = queryset.get(auth_user_id_id = request.user.id)
+          
+          total,cost_per_gallons = self.calculatePrice(request.user.id, queryset.get(auth_user_id_id = request.user.id).state, gallons)
+          args = {'client' : client}
           quote = FuelQuote(
             gallons=gallons, 
             deliver_address=delivery_address, 
             delivery_date = delivery_date_str, 
-            suggested_price_per_gallons = '1.23', 
-            total_amount_due = '23', 
+            suggested_price_per_gallons = cost_per_gallons, 
+            total_amount_due = total, 
             client_id_id = client_id
           )
           quote.save()
 
           return render(
               request,
-              "hexafuel_oil_app/fuel_quote.html",
+              "hexafuel_oil_app/fuel_quote.html", args
           )
         except Exception as e:
           print('EXP', e)
           return JsonResponse({"AccessError": "Please fill out profile information."})
-          
-
+  
 
 class HistoryView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     permission_required = ("auth.change_user")
@@ -108,47 +161,6 @@ class HistoryView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
         return render(request, "hexafuel_oil_app/history.html")
 
 
-
-# class RegisterView(TemplateView):
-#     template_name = "hexafuel_oil_app/register.html"
-
-#     def post(self, request, *args, **kwargs):
-
-#         print("REQUEST", request.POST)
-#         username = str(request.POST.get('username'))
-#         email = str(request.POST.get('email'))
-#         pwd = str(request.POST.get('password1'))
-#         retypePwd = str(request.POST.get('password2'))
-
-#         isSubmitted = str(request.POST.get('isSubmitted'))
-        
-#         self.object = []
-
-#         print(type(username)) #-> <class 'str'>
-#         print(type(email)) #-> <class 'str'>
-#         print(type(pwd)) #-> <class 'str'>
-#         print(type(retypePwd)) #-> <class 'str'>
-#         print(type(isSubmitted)) #-> <class 'str'>
-        
-#         email_regex = re.compile(r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|'(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*')@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])")
-
-#         if (isSubmitted == "true"):
-
-#             if (username == "") or (len(username) > 10):
-#                 return JsonResponse({"ValidationError": "username cannot be empty or cannot exceed 10 chars."})
-
-#             if (pwd == "") or (retypePwd == ""):
-#                 return JsonResponse({"ValidationError": "password or retype-password field cannot be empty."})
-            
-#             if (pwd != retypePwd):
-#                 return JsonResponse({"ValidationError": "please make sure password and retype-password field match."})
-            
-#             if (not(email_regex.match(email))):
-#                 return JsonResponse({"ValidationError": "email is not valid."})
-
-#         return render(request, 'hexafuel_oil_app/register.html')  
-
-
 class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     template_name = "hexafuel_oil_app/account_settings.html"
     permission_required = ("auth.change_user")
@@ -157,8 +169,6 @@ class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
         try:
             clients_queryset = ClientInformation.objects.all()
             client = clients_queryset.get(auth_user_id_id = request.user.id)
-            # quotes_queryset = FuelQuote.objects.all()
-            # quotes = quotes_queryset.filter(client_id_id = client_id)
             args = {'client' : client}
             return render(request, "hexafuel_oil_app/account_settings.html", args)
         except Exception as e:
@@ -209,7 +219,6 @@ class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
             }
         )
         args = {'messages' : 'Your Profile has been Updated successfully!'} 
-        # messages.info(request, 'Your Profile has been Updated successfully!')
         return render(request, 'hexafuel_oil_app/account_settings.html', args)
 
 
