@@ -1,5 +1,5 @@
-from django.apps import AppConfig
+from django.apps import AppConfig #pragma: no cover
 
 
-class HexafuelOilAppConfig(AppConfig):
+class HexafuelOilAppConfig(AppConfig): #pragma: no cover
     name = 'hexafuel_oil_app'

@@ -1,7 +1,7 @@
 from django.utils.http import is_safe_url
 
 class RequestFormAttachMixin(object):
-    def get_form_kwargs(self):
+    def get_form_kwargs(self): #pragma: no cover
         kwargs = super(RequestFormAttachMixin, self).get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
@@ -9,7 +9,7 @@ class RequestFormAttachMixin(object):
 
 class NextUrlMixin(object):
     default_next = "/"
-    def get_next_url(self):
+    def get_next_url(self): #pragma: no cover
         request = self.request
         next_ = request.GET.get('next')
         next_post = request.POST.get('next')

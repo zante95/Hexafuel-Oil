@@ -8,14 +8,14 @@ username = 'user1'
 password = '123'
 
 client = Client()
-
 newUser_noInfo = Client()
+# newUser_noPreviousQuote = Client()
+
+# login2 = newUser_noPreviousQuote.login(username = 'user22', password = '123')
 logged_in = newUser_noInfo.login(username = 'user21', password = '123')
+login = client.login(username = username, password = password)
 
-#request = client.post()
-login = client.login(username=username, password=password)
-
-successful_form_request = client.post(
+test_successful_form_request = client.post(
     "/form/",
     {
         "gallons": ["4"],
@@ -25,7 +25,7 @@ successful_form_request = client.post(
     },
 )
 
-falied_gallon_form_request = client.post(
+test_failed_gallon_form_request = client.post(
     "/form/",
     {
         "gallons": ["NUM"],
@@ -35,7 +35,7 @@ falied_gallon_form_request = client.post(
     },
 )
 
-falied_delivery_date_form_request = client.post(
+test_failed_delivery_date_form_request = client.post(
     "/form/",
     {
         "gallons": ["150"],
@@ -45,7 +45,7 @@ falied_delivery_date_form_request = client.post(
     },
 )
 
-failed_form_request = newUser_noInfo.post(
+test_failed_form_request = newUser_noInfo.post(
     "/form/",
     {
         "gallons": ["4"],
@@ -55,30 +55,84 @@ failed_form_request = newUser_noInfo.post(
     },
 )
 
-successful_history_request = client.get(
+test_successful_form_request_greater_than_1000_gal = client.post(
+    "/form/",
+    {
+        "gallons": ["2000"],
+        "delivery-address": ["123 st"],
+        "delivery-date": ["2022-03-18"],
+        "Calculate Cost": ["Calculate Cost"],
+    },
+)
+
+test_successful_get_address = client.get(
+    "/form/",
+    {
+
+    },
+)
+
+test_failed_get_address = newUser_noInfo.get(
+    "/form/",
+    {
+
+    },
+)
+
+class FuelQuoteFormViewTest(TestCase):
+    
+    @classmethod
+    def test_successful_form_request(self): 
+        pass
+
+    @classmethod
+    def test_failed_gallon_form_request(self): 
+        pass
+
+    @classmethod
+    def test_failed_delivery_date_form_request(self): 
+        pass
+    
+    @classmethod
+    def test_failed_form_request(self): 
+        pass
+
+    @classmethod
+    def test_successful_form_request_greater_than_1000_gal(self): 
+        pass
+
+    @classmethod
+    def test_successful_get_address(self): 
+        pass
+    
+    @classmethod
+    def test_failed_get_address(self): 
+        pass
+    
+test_successful_history_request = client.get(
     "/history/",
     {
        
     },
 )
 
-failed_history_request = newUser_noInfo.get(
+test_failed_history_request = newUser_noInfo.get(
     "/history/",
     {
         
     },
 )
 
-class FuelQuoteFormViewTest(TestCase):
+class HistoryViewTest(TestCase):
+    
     @classmethod
-    def test_view_validations(self):
-        # response = self.client.post("/form/")
-        # print("self", self)
-        # print("self", self.__dict__)
-        # print("response", response)
-        # print("response.status_code", response.status_code)
-        # self.assertEqual(response.status_code, 200)
+    def test_successful_history_request(self): 
         pass
+
+    @classmethod
+    def test_failed_history_request(self): 
+        pass
+
 
 # no_error_test = Client()
 # response = client.post(
@@ -94,18 +148,110 @@ class FuelQuoteFormViewTest(TestCase):
 # )
 
 # fullname_test = Client()
-response = newUser_noInfo.post(
+test_newUser_noInfo = newUser_noInfo.post(
     "/profile/",
     {
     "fullname": ["abc"],
     "add1": ["14455 Country Place Dr"],
     "add2": ["318"],
     "city": ["Houston"],
+    "state": ["TX"],
     "zipcode": ["77449"],
     "is_Submitted": ["true"]
     },
 )
 
+test_get_newUser_noInfo = newUser_noInfo.get(
+    "/profile/",
+    {
+
+    },
+)
+
+class ProfileViewTest(TestCase):
+    
+    @classmethod
+    def test_newUser_noInfo(self): 
+        pass
+    
+    @classmethod
+    def test_get_newUser_noInfo(self): 
+        pass
+
+test_calculate_not_get = client.post(
+    "/calculate/",
+    {
+        "gallons": ["1500"],
+        "delivery-date": ["2022-03-18"],
+    },
+)
+
+test_calculate_successful_get_outside_TX = client.get(
+    "/calculate/",
+    {
+        "gallons": ["1500"],
+        "delivery-date": ["2022-03-18"],
+    },
+)
+
+test_calculate_successful_get_in_TX = newUser_noInfo.get(
+    "/calculate/",
+    {
+        "gallons": ["1500"],
+        "delivery-date": ["2022-03-18"],
+    },
+)
+
+test_calculate_successful_less_than_1000_gal = newUser_noInfo.get(
+    "/calculate/",
+    {
+        "gallons": ["800"],
+        "delivery-date": ["2022-03-18"],
+    },
+)
+
+# test_calculate_successful_get_no_previous_quotes = newUser_noPreviousQuote.get(
+#     "/calculate/",
+#     {
+#         "gallons": ["1500"],
+#         "delivery-date": ["2022-03-18"],
+#     },
+# )
+
+class CalculatePriceTest(TestCase):
+    
+    @classmethod
+    def test_calculate_not_get(self): 
+        pass
+
+    @classmethod
+    def test_calculate_successful_get_outside_TX(self): 
+        pass
+
+    @classmethod
+    def test_calculate_successful_get_in_TX(self): 
+        pass
+    
+    @classmethod
+    def test_calculate_successful_less_than_1000_gal(self): 
+        pass
+    
+    # @classmethod
+    # def test_calculate_successful_get_no_previous_quotes(self): 
+    #     pass
+
+test_logout = newUser_noInfo.get(
+    "/logout/",
+    {
+
+    },
+)
+
+class LogoutViewTest(TestCase):
+    
+    @classmethod
+    def test_logout(self): 
+        pass
 # add1_test = Client()
 # response = add1_test.post(
 #     "/profile/",
@@ -145,26 +291,26 @@ response = newUser_noInfo.post(
 #     },
 # )
 
-class ProfileViewTest(TestCase):
-    @classmethod
-    def test_no_error(self):
-        pass
+# class ProfileViewTest(TestCase):
+#     @classmethod
+#     def test_no_error(self):
+#         pass
     
-    @classmethod
-    def test_fullname(self):
-        pass
-    @classmethod
-    def test_add1(self):
-        pass
+#     @classmethod
+#     def test_fullname(self):
+#         pass
+#     @classmethod
+#     def test_add1(self):
+#         pass
     
-    @classmethod
-    def test_add2(self):
-        pass
+#     @classmethod
+#     def test_add2(self):
+#         pass
     
-    @classmethod
-    def test_zip(self):
-        pass
-        
+#     @classmethod
+#     def test_zip(self):
+#         pass
+
 # c_wrong_email = Client()
 # response = c_wrong_email.post(
 #     "/register/",

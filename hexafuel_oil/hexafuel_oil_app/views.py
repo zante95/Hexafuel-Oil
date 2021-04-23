@@ -90,6 +90,8 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
         try:
             clients_queryset = ClientInformation.objects.all()
             client = clients_queryset.get(auth_user_id_id = request.user.id)
+            print(client.address1)
+            client_address = client.address1
             args = {'client' : client}
             return render(request, "hexafuel_oil_app/fuel_quote.html", args)
         except Exception as e:
@@ -221,7 +223,6 @@ class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
         args = {'messages' : 'Your Profile has been Updated successfully!'} 
         return render(request, 'hexafuel_oil_app/account_settings.html', args)
 
-
 class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
     form_class = LoginForm
     success_url = '/form'
@@ -233,7 +234,6 @@ class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
         print(next_path)
 
         return redirect('/form')
-
 
 class RegisterView2(CreateView):
     form_class = RegisterForm

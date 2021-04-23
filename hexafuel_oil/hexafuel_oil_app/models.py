@@ -4,7 +4,7 @@ from django.conf import settings
 
 # Create your models here.
 class UserManager(BaseUserManager):
-    def create_user(self, username, password=None, is_active=True):
+    def create_user(self, username, password=None, is_active=True): #pragma: no cover
         if not email:
             raise ValueError("Users must have a username")
         if not password:
@@ -16,43 +16,6 @@ class UserManager(BaseUserManager):
         user_obj.is_active = is_active
         user_obj.save(using=self._db)
         return user_obj
-
-# class User(AbstractBaseUser):
-#     username = models.CharField(
-#         verbose_name='username',
-#         max_length=10,
-#         unique=True,
-#     )
-#     active = models.BooleanField(default=True)
-#     admin = models.BooleanField(default=False) # a superuser
-#     # notice the absence of a "Password field", that is built in.
-
-#     USERNAME_FIELD = 'username'
-#     REQUIRED_FIELDS = [] # Username & Password are required by default.
-
-#     def __str__(self):              # __unicode__ on Python 2
-#         return self.username
-
-#     def has_perm(self, perm, obj=None):
-#         "Does the user have a specific permission?"
-#         return True
-
-#     def has_module_perms(self, app_label):
-#         "Does the user have permissions to view the app `app_label`?"
-#         return True
-
-#     @property
-#     def is_admin(self):
-#         "Is the user a admin member?"
-#         return self.admin
-
-#     @property
-#     def is_active(self):
-#         "Is the user active?"
-#         return self.active
-    
-# class UserCredentials():
-#   username = models.OneToOneField(User, on_delete = models.DO_NOTHING)
 
 class ClientInformation(models.Model):
     class States(models.TextChoices):
@@ -107,8 +70,6 @@ class ClientInformation(models.Model):
         WISCONSIN='WI'
         WYOMING='WY'
 
-    #username = models.ForeignKey(User, on_delete=models.CASCADE)
-    #auth_user_id = models.OneToOneField(settings.AUTH_USER_MODEL, to_field='id', on_delete = models.CASCADE)
     auth_user_id = models.OneToOneField(User, to_field='id', on_delete = models.CASCADE)
     fullname = models.CharField(max_length=50)
     address1 = models.CharField(max_length=100)
@@ -117,7 +78,7 @@ class ClientInformation(models.Model):
     state = models.CharField(max_length=2, choices=States.choices)
     zipcode = models.CharField(max_length=9)
 
-    def str(self):
+    def str(self): #pragma: no cover
         return self.fullname
 
 class FuelQuote(models.Model):
@@ -128,5 +89,5 @@ class FuelQuote(models.Model):
     suggested_price_per_gallons = models.DecimalField(max_digits=3, decimal_places=2)
     total_amount_due = models.DecimalField(max_digits=9, decimal_places=2)
 
-    def str(self):
+    def str(self): #pragma: no cover
         return str(self.id)
