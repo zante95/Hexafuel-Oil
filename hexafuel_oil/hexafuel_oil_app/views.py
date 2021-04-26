@@ -43,8 +43,8 @@ def calculatePrice(request):
         margin = current_price_per_gallons * (location_factor - rate_history_factor + gallons_requested_factor + company_profit_factor)
 
         suggested_price_per_gallons = current_price_per_gallons + margin
-        total_result = suggested_price_per_gallons * int(gallons)
-        price_result = suggested_price_per_gallons
+        total_result = '{:,.2f}'.format(suggested_price_per_gallons * int(gallons))
+        price_result = '{:,.2f}'.format(suggested_price_per_gallons)
         args = {'price_result':price_result, 'total_result':total_result}
         return JsonResponse(args) # Sending an success response
 
