@@ -13,4 +13,5 @@
   <li>change your terminal directory to <b>root/hexafuel_oil</b> where <b>manage.py</b> resides in</li>
   <li>run this command: <b>coverage run --source='.' manage.py test hexafuel_oil_app</b></li>
   <li>to get the coverage report, run: <b>coverage html</b> for the HTML version of the report, or <b>coverage report</b> for a quick overview of the coverage report in the terminal</li>
+   <li>Go to you file directory and locate <b>root/hexafuel_oil/htmlcov/index.html</b> for the HTML version.</li>
 </ul>
