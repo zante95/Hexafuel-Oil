@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 import datetime
 import re
+from django.urls import reverse
 from django.views.generic import TemplateView, CreateView, FormView, DetailView, View, UpdateView, RedirectView
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -9,6 +10,7 @@ from .mixins import NextUrlMixin, RequestFormAttachMixin
 from .forms import LoginForm, RegisterForm
 from .models import FuelQuote, ClientInformation
 from django.contrib.auth.models import User
+import time
 
 
 def calculatePrice(request):
@@ -92,6 +94,12 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
             client = clients_queryset.get(auth_user_id_id = request.user.id)
             print(client.address1)
             client_address = client.address1
+            
+            if client_address == None:
+              return JsonResponse(
+                    {"ValidationError": "User must update their profile address before requesting any price quote."}
+              )
+          
             args = {'client' : client}
             return render(request, "hexafuel_oil_app/fuel_quote.html", args)
         except Exception as e:
@@ -107,14 +115,18 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
             gallons = data["gallons"]
             delivery_date_str = data["delivery-date"]
             delivery_address = data["delivery-address"]
+            
+            print(delivery_address, type(delivery_address))
+
+            if delivery_address == 'None':
+              args = {'messages' : 'User must update their profile address before requesting any price quote.'}
+              return render(request, 'hexafuel_oil_app/fuel_quote.html', args)
 
             if not gallons.isnumeric():
-                return JsonResponse(
-                    {"ValidationError": "Gallons must be a whole number."}
-                )
+              args = {'messages' : 'Gallons must be a whole number.'}
+              return render(request, 'hexafuel_oil_app/fuel_quote.html', args)
 
             date_time_obj = datetime.datetime.strptime(delivery_date_str, "%Y-%m-%d")
-
 
             if date_time_obj < datetime.datetime.now():
                 return JsonResponse({"ValidationError": "Choose a latter date."})
@@ -143,7 +155,9 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
           )
         except Exception as e:
           print('EXP', e)
-          return JsonResponse({"AccessError": "Please fill out profile information."})
+          #return JsonResponse({"AccessError": "Please fill out profile information."})
+          args = {'messages' : 'Please fill out profile information.'}
+          return render(request, 'hexafuel_oil_app/fuel_quote.html', args)
   
 
 class HistoryView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
@@ -236,10 +250,14 @@ class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
         return redirect('/form')
 
 class RegisterView2(CreateView):
+
     form_class = RegisterForm
     template_name = 'hexafuel_oil_app/register2.html'
-    success_url = '/home'
+    #success_url = '/register2'
 
+    def get_success_url(self):
+      time.sleep(5)
+      return self.request.path
 
 class LogoutView(LoginRequiredMixin, PermissionRequiredMixin, RedirectView):
     permission_required = ("auth.change_user")

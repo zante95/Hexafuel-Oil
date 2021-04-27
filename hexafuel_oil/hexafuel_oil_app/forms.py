@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.models import Permission
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 
 User = get_user_model()
 
@@ -40,15 +42,25 @@ class RegisterForm(forms.ModelForm):
         model = User
         fields = ('username','email') #'full_name',)
 
-    def clean_password2(self):
-        # Check that the two password entries match
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
-            raise forms.ValidationError("Passwords don't match")
-        return password2
+    # def clean_password2(self):
+    #     # Check that the two password entries match
+    #     password1 = self.cleaned_data.get("password1")
+    #     password2 = self.cleaned_data.get("password2")
+    #     if password1 and password2 and password1 != password2:
+    #         #raise forms.ValidationError("Passwords don't match")
+    #         args = {'messages' : "Passwords don't match 2"}
+    #         return render(request, 'hexafuel_oil_app/register2.html', args)
+    #     return password2
 
     def save(self, commit=True):
+        #check if passwords match each other
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 != password2 or len(self.cleaned_data.get("username")) >= 10:
+            args = {'messages' : 'Passwords do not match 2'}
+            print('Passwords do not match or username exceeds 10 characters')
+            return redirect('hexafuel_oil_app/register2.html', args)
+
         # Save the provided password in hashed format
         user = super(RegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
@@ -60,4 +72,5 @@ class RegisterForm(forms.ModelForm):
         if commit:
             user.save()
             user.user_permissions.add(permission)
+        
         return user

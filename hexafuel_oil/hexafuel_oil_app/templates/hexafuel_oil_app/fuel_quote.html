@@ -8,6 +8,10 @@
 
 <br>
 
+{% if messages %}
+<div class="alert alert-info alert-dismissable">{{ messages }}</div>
+{% endif %}
+
 <div class="form_container">
   <form id="fuel-quote-form" name="fuel-form" method="POST" action="" enctype="multipart/form-data"
     onsubmit="return validateForm()">

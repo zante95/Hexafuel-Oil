@@ -12,7 +12,14 @@ for (var field in form_fields){
 
 // for avoiding email regex backend validation in views.py in register views function being triggered automatically (otherwise it will not grant tester access to the register page)  
 function backendValidateForm() {
-    document.forms["register-form"]["isSubmitted"].value = "true";
+    //document.forms["register-form"]["isSubmitted"].value = "true";
+    //console.log(document.forms["register-form"]["password1"].value)
+    //console.log(document.forms["register-form"]["password2"].value)
+    if((document.forms["register-form"]["password1"].value != document.forms["register-form"]["password2"].value)){
+      $('.alert').removeAttr('hidden')
+      $('.alert-message').text('Passwords do not match or username exceeds 10 characters')
+      console.log('Passwords do not match or username exceeds 10 characters')
+    }
 }
 
 function uiUpdate() {
@@ -41,12 +48,11 @@ function uiUpdate() {
 
         if (hasCheckedClass) {
           //add br after that elements
+          $('.helptext').text('Required. 10 characters or fewer. Letters, digits and @/./+/-/_ only.')
           $('.helptext').after("<br/><br/>")
-          console.log("here i am");
         } else {
           //do nothing
         }
-    
 
 }
 
