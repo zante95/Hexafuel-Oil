@@ -9,7 +9,7 @@
 <h2>To run coverage test:</h2>
 <ul>
   <li>Install Coverage.py from <a href="https://coverage.readthedocs.io/en/coverage-5.5/">here</a></li>
-  <li>Coveraage.py Explanation from <a href="https://docs.google.com/document/d/1f2E76Hc1ax4pjL02YPOqhHs_jUr-5gyhqzBJKp3CyyM/edit?pli=1">here</a></li>
+  <li>Coverage.py Explanation:  <a href="https://docs.google.com/document/d/1f2E76Hc1ax4pjL02YPOqhHs_jUr-5gyhqzBJKp3CyyM/edit?pli=1">Click Here</a></li>
   <li>change your terminal directory to <b>root/hexafuel_oil</b> where <b>manage.py</b> resides in</li>
   <li>run this command: <b>coverage run --source='.' manage.py test hexafuel_oil_app</b></li>
   <li>to get the coverage report, run: <b>coverage html</b> for the HTML version of the report, or <b>coverage report</b> for a quick overview of the coverage report in the terminal</li>
