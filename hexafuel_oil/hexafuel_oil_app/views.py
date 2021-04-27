@@ -129,7 +129,8 @@ class FuelQuoteFormView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView
             date_time_obj = datetime.datetime.strptime(delivery_date_str, "%Y-%m-%d")
 
             if date_time_obj < datetime.datetime.now():
-                return JsonResponse({"ValidationError": "Choose a latter date."})
+                args = {'messages' : 'Choose a latter date.'}
+                return render(request, "hexafuel_oil_app/fuel_quote.html", args)
 
         try:
           queryset = ClientInformation.objects.all()
@@ -218,8 +219,8 @@ class ProfileView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
             if (len(city)<1) or (len(city)) > 100:
                 return JsonResponse({"ValidationError": "City needs to be more than 1 and less than 100 charaters longs."})
  
-            if len(zipcode) != 5:
-                return JsonResponse({"ValidationError": "City needs to be 5 characters long."})
+            if len(zipcode) < 5 and len(zipcode) > 9:
+                return JsonResponse({"ValidationError": "City needs to be 5 characters long at least and does not exceed 9 characters."})
         auth_user_id = request.user.id
         obj, created = ClientInformation.objects.update_or_create(
             auth_user_id_id = auth_user_id,

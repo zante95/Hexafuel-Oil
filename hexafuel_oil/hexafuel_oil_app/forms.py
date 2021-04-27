@@ -57,7 +57,7 @@ class RegisterForm(forms.ModelForm):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 != password2 or len(self.cleaned_data.get("username")) >= 10:
-            args = {'messages' : 'Passwords do not match 2'}
+            args = {'messages' : 'Passwords do not match or username exceeds 10 characters'}
             print('Passwords do not match or username exceeds 10 characters')
             return redirect('hexafuel_oil_app/register2.html', args)
 

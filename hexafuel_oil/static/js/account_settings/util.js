@@ -37,8 +37,8 @@ function validateForm(){
         return false;
     }
     
-    if (zipcodeIsValid.length != 5) {
-        alert("Please enter your zip code and make sure it has 5 characters.");
+    if (zipcodeIsValid.length < 5 || zipcodeIsValid.length > 9) {
+        alert("Please enter your zip code and make sure it has at least 5 characters and does not exceed 9 characters.");
         return false;
     } 
 
